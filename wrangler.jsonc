@@ -103,8 +103,7 @@
     "r2_buckets": [
       {
         "binding": "TEMPLATES_BUCKET",
-        "bucket_name": "vibesdk-templates",
-        "remote": true
+        "bucket_name": "vibesdk-templates"
       }
     ],
     "kv_namespaces": [
