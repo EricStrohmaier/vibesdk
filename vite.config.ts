@@ -3,9 +3,57 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import svgr from 'vite-plugin-svgr';
 import path from 'path';
+import https from 'https';
 
 import { cloudflare } from '@cloudflare/vite-plugin';
 import tailwindcss from '@tailwindcss/vite';
+
+const devAIProxyPlugin = {
+        name: 'dev-ai-proxy',
+        configureServer(server: any) {
+                server.middlewares.use('/dev-proxy/google-ai-studio', (req: any, res: any) => {
+                        const urlPath = req.url || '/';
+                        const targetUrl = new URL(`https://generativelanguage.googleapis.com/v1beta/openai${urlPath}`);
+
+                        const proxyHeaders: Record<string, string> = {
+                                host: targetUrl.hostname,
+                        };
+                        if (req.headers['content-type']) proxyHeaders['content-type'] = req.headers['content-type'];
+                        if (req.headers['authorization']) proxyHeaders['authorization'] = req.headers['authorization'];
+                        if (req.headers['content-length']) proxyHeaders['content-length'] = req.headers['content-length'];
+                        if (req.headers['accept']) proxyHeaders['accept'] = req.headers['accept'];
+
+                        const options: https.RequestOptions = {
+                                hostname: targetUrl.hostname,
+                                port: 443,
+                                path: targetUrl.pathname + targetUrl.search,
+                                method: req.method,
+                                headers: proxyHeaders,
+                        };
+
+                        const proxyReq = https.request(options, (proxyRes) => {
+                                const responseHeaders: Record<string, string | string[]> = {};
+                                if (proxyRes.headers['content-type']) responseHeaders['content-type'] = proxyRes.headers['content-type'];
+                                if (proxyRes.headers['transfer-encoding']) responseHeaders['transfer-encoding'] = proxyRes.headers['transfer-encoding'];
+                                if (proxyRes.headers['cache-control']) responseHeaders['cache-control'] = proxyRes.headers['cache-control'];
+                                responseHeaders['access-control-allow-origin'] = '*';
+
+                                res.writeHead(proxyRes.statusCode || 200, responseHeaders);
+                                proxyRes.pipe(res, { end: true });
+                        });
+
+                        proxyReq.on('error', (err: Error) => {
+                                console.error('[dev-ai-proxy] Proxy error:', err.message);
+                                if (!res.headersSent) {
+                                        res.writeHead(502, { 'content-type': 'application/json' });
+                                }
+                                res.end(JSON.stringify({ error: 'proxy_error', message: err.message }));
+                        });
+
+                        req.pipe(proxyReq, { end: true });
+                });
+        },
+};
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -15,16 +63,8 @@ export default defineConfig({
                 force: true,
         },
 
-        // build: {
-        //     rollupOptions: {
-        //       output: {
-        //             advancedChunks: {
-        //                 groups: [{name: 'vendor', test: /node_modules/}]
-        //             }
-        //         }
-        //     }
-        // },
         plugins: [
+                devAIProxyPlugin,
                 react(),
                 svgr(),
                 cloudflare({
@@ -32,10 +72,6 @@ export default defineConfig({
                         remoteBindings: false,
                 }),
                 tailwindcss(),
-                // sentryVitePlugin({
-                //      org: 'cloudflare-0u',
-                //      project: 'javascript-react',
-                // }),
         ],
 
         resolve: {
@@ -47,19 +83,14 @@ export default defineConfig({
                 },
         },
 
-        // Configure for Prisma + Cloudflare Workers compatibility
         define: {
-                // Ensure proper module definitions for Cloudflare Workers context
                 'process.env.NODE_ENV': JSON.stringify(
                         process.env.NODE_ENV || 'development',
                 ),
                 global: 'globalThis',
-                // '__filename': '""',
-                // '__dirname': '""',
         },
 
         worker: {
-                // Handle Prisma in worker context for development
                 format: 'es',
         },
 
@@ -72,6 +103,5 @@ export default defineConfig({
                 },
         },
 
-        // Clear cache more aggressively
         cacheDir: 'node_modules/.vite',
 });

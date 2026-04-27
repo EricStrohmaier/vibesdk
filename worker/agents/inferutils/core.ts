@@ -172,12 +172,12 @@ function optimizeTextContent(content: string): string {
 
     // // Convert 4-space indentation to 2-space for non-Python/YAML content
     // content = content.replace(/^( {4})+/gm, (match) =>
-    // 	'  '.repeat(match.length / 4),
+    //  '  '.repeat(match.length / 4),
     // );
 
     // // Convert 8-space indentation to 2-space
     // content = content.replace(/^( {8})+/gm, (match) =>
-    // 	'  '.repeat(match.length / 8),
+    //  '  '.repeat(match.length / 8),
     // );
     // 4. Remove leading/trailing whitespace from the entire content
     // (but preserve internal structure)
@@ -197,9 +197,9 @@ function constructGatewayUrl(url: URL, providerOverride?: AIGatewayProviders): s
 }
 
 export async function buildGatewayUrl(
-	env: Env,
-	providerOverride?: AIGatewayProviders,
-	gatewayOverride?: { baseUrl: string; token: string },
+        env: Env,
+        providerOverride?: AIGatewayProviders,
+        gatewayOverride?: { baseUrl: string; token: string },
 ): Promise<string> {
     // Runtime override (SDK): explicit AI Gateway base URL
     if (gatewayOverride?.baseUrl) {
@@ -245,10 +245,10 @@ function isValidApiKey(apiKey: string): boolean {
 }
 
 async function getApiKey(
-	provider: string,
-	env: Env,
-	_userId: string,
-	runtimeOverrides?: InferenceRuntimeOverrides,
+        provider: string,
+        env: Env,
+        _userId: string,
+        runtimeOverrides?: InferenceRuntimeOverrides,
 ): Promise<string> {
     console.log("Getting API key for provider: ", provider);
 
@@ -293,11 +293,16 @@ export async function getConfigurationForModel(
                     baseURL: 'https://openrouter.ai/api/v1',
                     apiKey: env.OPENROUTER_API_KEY,
                 };
-            case 'google-ai-studio':
+            case 'google-ai-studio': {
+                const isDevMode = env.ENVIRONMENT === 'dev';
+                const googleBaseURL = isDevMode
+                    ? `http://${env.CUSTOM_DOMAIN}/dev-proxy/google-ai-studio/`
+                    : 'https://generativelanguage.googleapis.com/v1beta/openai/';
                 return {
-                    baseURL: 'https://generativelanguage.googleapis.com/v1beta/openai/',
+                    baseURL: googleBaseURL,
                     apiKey: env.GOOGLE_AI_STUDIO_API_KEY,
                 };
+            }
             case 'anthropic':
                 return {
                     baseURL: 'https://api.anthropic.com/v1/',
