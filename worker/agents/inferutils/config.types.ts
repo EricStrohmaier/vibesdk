@@ -42,6 +42,7 @@ const MODELS_MASTER = {
             provider: 'google-ai-studio',
             creditCost: 5,   // $1.25
             contextSize: 1048576, // 1M Context
+            directOverride: true,
         }
     },
     GEMINI_2_5_FLASH: {
@@ -52,6 +53,7 @@ const MODELS_MASTER = {
             provider: 'google-ai-studio',
             creditCost: 1.2, // $0.30
             contextSize: 1048576, // 1M Context
+            directOverride: true,
         }
     },
     GEMINI_2_5_FLASH_LITE: {
@@ -62,6 +64,7 @@ const MODELS_MASTER = {
             provider: 'google-ai-studio',
             creditCost: 0.4, // $0.10
             contextSize: 1048576, // 1M Context
+            directOverride: true,
         }
     },
     GEMINI_2_5_FLASH_LATEST: {
@@ -72,6 +75,7 @@ const MODELS_MASTER = {
             provider: 'google-ai-studio',
             creditCost: 1.2, // $0.30
             contextSize: 1048576,
+            directOverride: true,
         }
     },
     GEMINI_2_5_FLASH_LITE_LATEST: {
@@ -82,6 +86,7 @@ const MODELS_MASTER = {
             provider: 'google-ai-studio',
             creditCost: 0.4, // $0.10
             contextSize: 1048576,
+            directOverride: true,
         }
     },
     GEMINI_2_5_PRO_LATEST: {
@@ -92,6 +97,7 @@ const MODELS_MASTER = {
             provider: 'google-ai-studio',
             creditCost: 5, // $1.25
             contextSize: 1048576,
+            directOverride: true,
         }
     },
     GEMINI_3_PRO_PREVIEW: {
@@ -102,6 +108,7 @@ const MODELS_MASTER = {
             provider: 'google-ai-studio',
             creditCost: 8, // $2.00 (Preview Pricing)
             contextSize: 1048576,
+            directOverride: true,
         }
     },
     GEMINI_3_FLASH_PREVIEW: {
@@ -112,6 +119,7 @@ const MODELS_MASTER = {
             provider: 'google-ai-studio',
             creditCost: 2, // $0.5
             contextSize: 1048576, // 1M Context
+            directOverride: true,
         }
     },
 
@@ -424,10 +432,10 @@ export type InferenceMetadata = {
 }
 
 export type InferenceRuntimeOverrides = {
-	/** Provider API keys (BYOK) keyed by provider id, e.g. "openai" -> key. */
-	userApiKeys?: Record<string, string>;
-	/** Optional AI gateway override (baseUrl + token). */
-	aiGatewayOverride?: { baseUrl: string; token: string };
+        /** Provider API keys (BYOK) keyed by provider id, e.g. "openai" -> key. */
+        userApiKeys?: Record<string, string>;
+        /** Optional AI gateway override (baseUrl + token). */
+        aiGatewayOverride?: { baseUrl: string; token: string };
 };
 
 /**
@@ -447,25 +455,25 @@ export interface InferenceContext {
  * SDK-facing credential payload
  */
 export type CredentialsPayload = {
-	providers?: Record<string, { apiKey: string }>;
-	aiGateway?: { baseUrl: string; token: string };
+        providers?: Record<string, { apiKey: string }>;
+        aiGateway?: { baseUrl: string; token: string };
 };
 
 export function credentialsToRuntimeOverrides(
-	credentials: CredentialsPayload | undefined,
+        credentials: CredentialsPayload | undefined,
 ): InferenceRuntimeOverrides | undefined {
-	if (!credentials) return undefined;
+        if (!credentials) return undefined;
 
-	const userApiKeys: Record<string, string> = {};
-	for (const [provider, v] of Object.entries(credentials.providers ?? {})) {
-		if (v.apiKey) userApiKeys[provider] = v.apiKey;
-	}
+        const userApiKeys: Record<string, string> = {};
+        for (const [provider, v] of Object.entries(credentials.providers ?? {})) {
+                if (v.apiKey) userApiKeys[provider] = v.apiKey;
+        }
 
-	const hasKeys = Object.keys(userApiKeys).length > 0;
-	return {
-		...(hasKeys ? { userApiKeys } : {}),
-		...(credentials.aiGateway ? { aiGatewayOverride: credentials.aiGateway } : {}),
-	};
+        const hasKeys = Object.keys(userApiKeys).length > 0;
+        return {
+                ...(hasKeys ? { userApiKeys } : {}),
+                ...(credentials.aiGateway ? { aiGatewayOverride: credentials.aiGateway } : {}),
+        };
 }
 
 export function isValidAIModel(value: string): value is AIModels {

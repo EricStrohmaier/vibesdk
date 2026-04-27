@@ -1,0 +1,22 @@
+
+    at /home/runner/workspace/worker/api/honoAdapter.ts:35:16
+    at dispatch (/home/runner/workspace/node_modules/.vite/deps_vibesdk_production/hono-COZXN294.js:17:11) {
+  remote: true
+}
+{"level":"error","time":"2026-04-27T10:19:46.357Z","component":"InferenceUtils","msg":"Error during templateSelection operation (attempt 2/5):","error":{"name":"Error","message":"Binding AI needs to be run remotely","stack":"Error: Binding AI needs to be run remotely\n    at AiGateway.getUrl (cloudflare-internal:aig-api:35:21)\n    at buildGatewayUrl (/home/runner/workspace/worker/agents/inferutils/core.ts:232:84)\n    at getConfigurationForModel (/home/runner/workspace/worker/agents/inferutils/core.ts:314:21)\n    at infer (/home/runner/workspace/worker/agents/inferutils/core.ts:560:53)\n    at executeInference (/home/runner/workspace/worker/agents/inferutils/infer.ts:159:37)\n    at selectTemplate (/home/runner/workspace/worker/agents/planning/templateSelector.ts:272:39)\n    at handleAITemplateSelection (/home/runner/workspace/worker/agents/index.ts:144:25)\n    at CodingAgentController.startCodeGeneration (/home/runner/workspace/worker/api/controllers/agent/controller.ts:143:83)\n    at /home/runner/workspace/worker/api/honoAdapter.ts:35:16\n    at dispatch (/home/runner/workspace/node_modules/.vite/deps_vibesdk_production/hono-COZXN294.js:17:11)"}}
+{"level":"info","time":"2026-04-27T10:19:46.357Z","component":"InferenceUtils","msg":"Retrying in 1000ms..."}
+{"level":"info","time":"2026-04-27T10:19:47.358Z","component":"InferenceUtils","msg":"Starting templateSelection operation with model google-ai-studio/gemini-2.5-flash (attempt 3/5)"}
+Error in inferWithSchemaOutput: Error: Binding AI needs to be run remotely
+    at AiGateway.getUrl (cloudflare-internal:aig-api:35:21)
+    at buildGatewayUrl (/home/runner/workspace/worker/agents/inferutils/core.ts:232:84)
+    at getConfigurationForModel (/home/runner/workspace/worker/agents/inferutils/core.ts:314:21)
+    at infer (/home/runner/workspace/worker/agents/inferutils/core.ts:560:53)
+    at executeInference (/home/runner/workspace/worker/agents/inferutils/infer.ts:159:37)
+    at selectTemplate (/home/runner/workspace/worker/agents/planning/templateSelector.ts:272:39)
+    at handleAITemplateSelection (/home/runner/workspace/worker/agents/index.ts:144:25)
+    at CodingAgentController.startCodeGeneration (/home/runner/workspace/worker/api/controllers/agent/controller.ts:143:83)
+    at /home/runner/workspace/worker/api/honoAdapter.ts:35:16
+    at dispatch (/home/runner/workspace/node_modules/.vite/deps_vibesdk_production/hono-COZXN294.js:17:11) {
+  remote: true
+}
+{"level":"error","time":"2026-04-27T10:19:47.360Z","component":"InferenceUtils","msg":"Error during templateSelection operation (attempt 3/5):","error":{"name":"Error","message":"Binding AI needs to be run remotely","stack":"Error: Binding AI needs to 
