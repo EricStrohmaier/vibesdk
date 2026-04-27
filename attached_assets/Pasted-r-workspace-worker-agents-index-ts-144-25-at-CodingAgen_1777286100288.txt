@@ -1,0 +1,46 @@
+r/workspace/worker/agents/index.ts:144:25)
+      at CodingAgentController.startCodeGeneration (/home/runner/workspace/worker/api/controllers/agent/controller.ts:143:83)
+      at /home/runner/workspace/worker/api/honoAdapter.ts:35:16
+      at dispatch (/home/runner/workspace/node_modules/.vite/deps_vibesdk_production/hono-COZXN294.js:17:11)
+      at /home/runner/workspace/worker/middleware/auth/routeAuth.ts:237:16 {
+    remote: true,
+    retryable: true
+  }
+}
+{"level":"error","time":"2026-04-27T10:34:54.418Z","component":"InferenceUtils","msg":"Error during templateSelection operation (attempt 3/5):","error":{"name":"Error","message":"Connection error.","stack":"Error: Connection error.\n    at OpenAI.makeRequest (/home/runner/workspace/node_modules/.vite/deps_vibesdk_production/openai.js:5117:10)\n    at infer (/home/runner/workspace/worker/agents/inferutils/core.ts:689:24)\n    at executeInference (/home/runner/workspace/worker/agents/inferutils/infer.ts:159:37)\n    at selectTemplate (/home/runner/workspace/worker/agents/planning/templateSelector.ts:272:39)\n    at handleAITemplateSelection (/home/runner/workspace/worker/agents/index.ts:144:25)\n    at CodingAgentController.startCodeGeneration (/home/runner/workspace/worker/api/controllers/agent/controller.ts:143:83)\n    at /home/runner/workspace/worker/api/honoAdapter.ts:35:16\n    at dispatch (/home/runner/workspace/node_modules/.vite/deps_vibesdk_production/hono-COZXN294.js:17:11)\n    at /home/runner/workspace/worker/middleware/auth/routeAuth.ts:237:16\n    at dispatch (/home/runner/workspace/node_modules/.vite/deps_vibesdk_production/hono-COZXN294.js:17:11)"}}
+{"level":"info","time":"2026-04-27T10:34:54.418Z","component":"InferenceUtils","msg":"Retrying in 2000ms..."}
+{"level":"info","time":"2026-04-27T10:34:56.420Z","component":"InferenceUtils","msg":"Starting templateSelection operation with model google-ai-studio/gemini-2.5-flash (attempt 4/5)"}
+baseUrl: http://localhost:5001/, modelName: google-ai-studio/gemini-2.5-flash
+Token optimization: Original messages size ~8804 chars, optimized size ~8792 chars
+Running inference with google-ai-studio/gemini-2.5-flash using structured output with undefined format, reasoning effort: undefined, max tokens: 2000, temperature: 0.6, frequency_penalty: undefined, baseURL: http://localhost:5001/
+Failed to get inference response from OpenAI: Error: Connection error.
+Error in inferWithSchemaOutput: APIConnectionError: Connection error.
+    at OpenAI.makeRequest (/home/runner/workspace/node_modules/.vite/deps_vibesdk_production/openai.js:5117:10)
+    at infer (/home/runner/workspace/worker/agents/inferutils/core.ts:689:24)
+    ... 6 lines matching cause stack trace ...
+    at /home/runner/workspace/worker/middleware/auth/routeAuth.ts:237:16
+    at dispatch (/home/runner/workspace/node_modules/.vite/deps_vibesdk_production/hono-COZXN294.js:17:11) {
+  status: undefined,
+  headers: undefined,
+  requestID: undefined,
+  error: undefined,
+  code: undefined,
+  param: undefined,
+  type: undefined,
+  cause: Error: Network connection lost.
+      at OpenAI.fetchWithTimeout (/home/runner/workspace/node_modules/.vite/deps_vibesdk_production/openai.js:5192:11)
+      at OpenAI.makeRequest (/home/runner/workspace/node_modules/.vite/deps_vibesdk_production/openai.js:5093:20)
+      at infer (/home/runner/workspace/worker/agents/inferutils/core.ts:689:24)
+      at executeInference (/home/runner/workspace/worker/agents/inferutils/infer.ts:159:37)
+      at selectTemplate (/home/runner/workspace/worker/agents/planning/templateSelector.ts:272:39)
+      at handleAITemplateSelection (/home/runner/workspace/worker/agents/index.ts:144:25)
+      at CodingAgentController.startCodeGeneration (/home/runner/workspace/worker/api/controllers/agent/controller.ts:143:83)
+      at /home/runner/workspace/worker/api/honoAdapter.ts:35:16
+      at dispatch (/home/runner/workspace/node_modules/.vite/deps_vibesdk_production/hono-COZXN294.js:17:11)
+      at /home/runner/workspace/worker/middleware/auth/routeAuth.ts:237:16 {
+    remote: true,
+    retryable: true
+  }
+}
+{"level":"error","time":"2026-04-27T10:34:57.757Z","component":"InferenceUtils","msg":"Error during templateSelection operation (attempt 4/5):","error":{"name":"Error","message":"Connection error.","stack":"Error: Connection error.\n    at OpenAI.makeRequest (/home/runner/workspace/node_modules/.vite/deps_vibesdk_production/openai.js:5117:10)\n    at infer (/home/runner/workspace/worker/agents/inferutils/core.ts:689:24)\n    at executeInference (/home/runner/workspace/worker/agents/inferutils/infer.ts:159:37)\n    at selectTemplate (/home/runner/workspace/worker/agents/planning/templateSelector.ts:272:39)\n    at handleAITemplateSelection (/home/runner/workspace/worker/agents/index.ts:144:25)\n    at CodingAgentController.startCodeGeneration (/home/runner/workspace/worker/api/controllers/agent/controller.ts:143:83)\n    at /home/runner/workspace/worker/api/honoAdapter.ts:35:16\n    at dispatch (/home/runner/workspace/node_modules/.vite/deps_vibesdk_production/hono-COZXN294.js:17:11)\n    at /home/runner/workspace/worker/middleware/auth/routeAuth.ts:237:16\n    at dispatch (/home/runner/workspace/node_modules/.vite/deps_vibesdk_production/hono-COZXN294.js:17:11)"}}
+{"level":"info","time":"2026-04-27T10:34:57.757Z","component":"InferenceUtils","msg":"Retrying in 4000ms..."}

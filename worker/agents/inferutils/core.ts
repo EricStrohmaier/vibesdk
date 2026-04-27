@@ -296,7 +296,7 @@ export async function getConfigurationForModel(
             case 'google-ai-studio': {
                 const isDevMode = env.ENVIRONMENT === 'dev';
                 const googleBaseURL = isDevMode
-                    ? `http://${env.CUSTOM_DOMAIN}/dev-proxy/google-ai-studio/`
+                    ? 'http://localhost:5001/'
                     : 'https://generativelanguage.googleapis.com/v1beta/openai/';
                 return {
                     baseURL: googleBaseURL,
