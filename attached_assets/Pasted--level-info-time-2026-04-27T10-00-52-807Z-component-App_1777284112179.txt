@@ -1,0 +1,20 @@
+
+{"level":"info","time":"2026-04-27T10:00:52.807Z","component":"App","msg":"Handling API request for: http://78368ebd-c4d3-42c4-b63f-5caf5d18d6d3-00-2zooqc17myukp.riker.replit.dev/api/agent"}
+requirement { required: true, level: 'authenticated' } for user {
+  id: '4a588b0c-6acf-4db4-b481-ae29fa895f10',
+  email: 'eric.strohmaier00@gmail.com',
+  displayName: 'er',
+  username: undefined,
+  avatarUrl: undefined,
+  bio: undefined,
+  timezone: 'UTC',
+  provider: 'email',
+  emailVerified: true,
+  createdAt: 2026-04-27T10:00:38.000Z
+}
+{"level":"info","time":"2026-04-27T10:00:52.826Z","component":"CodingAgentController","msg":"Starting code generation process"}
+{"level":"info","time":"2026-04-27T10:00:52.827Z","component":"CodingAgentController","msg":"Resolved behaviorType: phasic, projectType: app for agent 57527b75-f998-4403-8814-6ba62576a1e7"}
+{"level":"info","time":"2026-04-27T10:00:52.833Z","component":"CodingAgentController","msg":"Initialized inference context for user 4a588b0c-6acf-4db4-b481-ae29fa895f10","modelConfigsCount":0}
+{"level":"info","time":"2026-04-27T10:00:52.833Z","component":"CodingAgentController","msg":"Creating project of type: app"}
+{"level":"error","time":"2026-04-27T10:00:52.870Z","component":"CodingAgentController","msg":"Error starting code generation","error":{"name":"Error","message":"Failed to fetch templates from sandbox service, Failed to fetch templates: Failed to fetch template catalog: Template catalog not found","stack":"Error: Failed to fetch templates from sandbox service, Failed to fetch templates: Failed to fetch template catalog: Template catalog not found\n    at handleAITemplateSelection (/home/runner/workspace/worker/agents/index.ts:141:15)\n    at CodingAgentController.startCodeGeneration (/home/runner/workspace/worker/api/controllers/agent/controller.ts:143:83)\n    at /home/runner/workspace/worker/api/honoAdapter.ts:35:16\n    at dispatch (/home/runner/workspace/node_modules/.vite/deps_vibesdk_production/hono-COZXN294.js:17:11)\n    at /home/runner/workspace/worker/middleware/auth/routeAuth.ts:237:16\n    at dispatch (/home/runner/workspace/node_modules/.vite/deps_vibesdk_production/hono-COZXN294.js:17:11)\n    at /home/runner/workspace/worker/middleware/auth/routeAuth.ts:237:16\n    at dispatch (/home/runner/workspace/node_modules/.vite/deps_vibesdk_production/hono-COZXN294.js:17:11)\n    at /home/runner/workspace/worker/app.ts:83:9\n    at dispatch (/home/runner/workspace/node_modules/.vite/deps_vibesdk_production/hono-COZXN294.js:17:11)"}}
+{"level":"error","time":"2026-04-27T10:00:52.871Z","component":"ErrorHandling","msg":"Error during start code generation","error":"Failed to fetch templates from sandbox service, Failed to fetch templates: Failed to fetch template catalog: Template catalog not found","stack":"Error: Failed to fetch templates from sandbox service, Failed to fetch templates: Failed to fetch template catalog: Template catalog not found\n    at handleAITemplateSelection (/home/runner/workspace/worker/agents/index.ts:141:15)\n    at CodingAgentController.startCodeGeneration (/home/runner/workspace/worker/api/controllers/agent/controller.ts:143:83)\n    at /home/runner/workspace/worker/api/honoAdapter.ts:35:16\n    at dispatch (/home/runner/workspace/node_modules/.vite/deps_vibesdk_production/hono-COZXN294.js:17:11)\n    at /home/runner/workspace/worker/middleware/auth/routeAuth.ts:237:16\n    at dispatch (/home/runner/workspace/node_modules/.vite/deps_vibesdk_production/hono-COZXN294.js:17:11)\n    at /home/runner/workspace/worker/middleware/auth/routeAuth.ts:237:16\n    at dispatch (/home/runner/workspace/node_modules/.vite/deps_vibesdk_production/hono-COZXN294.js:17:11)\n    at /home/runner/workspace/worker/app.ts:83:9\n    at dispatch (/home/runner/workspace/node_modules/.vite/deps_vibesdk_production/hono-COZXN294.js:17:11)"}
