@@ -69,6 +69,10 @@ localPort = 4100
 externalPort = 5173
 
 [[ports]]
+localPort = 4101
+externalPort = 8008
+
+[[ports]]
 localPort = 5000
 externalPort = 80
 
@@ -100,6 +104,11 @@ externalPort = 6000
 [[ports]]
 localPort = 9230
 externalPort = 5000
+exposeLocalhost = true
+
+[[ports]]
+localPort = 9231
+externalPort = 8000
 exposeLocalhost = true
 
 [postMerge]
