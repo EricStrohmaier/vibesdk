@@ -142,7 +142,9 @@ export class CodingAgentController extends BaseController {
 
             const { templateDetails, selection, projectType: finalProjectType } = await getTemplateForQuery(env, inferenceContext, query, projectType, body.images, this.logger, body.selectedTemplate);
 
-            const websocketUrl = `${url.protocol === 'https:' ? 'wss:' : 'ws:'}//${url.host}/api/agent/${agentId}/ws`;
+            const forwardedProto = request.headers.get('X-Forwarded-Proto');
+            const wsProtocol = (forwardedProto === 'https' || url.protocol === 'https:') ? 'wss:' : 'ws:';
+            const websocketUrl = `${wsProtocol}//${url.host}/api/agent/${agentId}/ws`;
             const httpStatusUrl = `${url.origin}/api/agent/${agentId}`;
 
             let uploadedImages: ProcessedImageAttachment[] = [];
@@ -308,7 +310,9 @@ export class CodingAgentController extends BaseController {
 
                 // Construct WebSocket URL
                 const url = new URL(request.url);
-                const websocketUrl = `${url.protocol === 'https:' ? 'wss:' : 'ws:'}//${url.host}/api/agent/${agentId}/ws`;
+                const forwardedProto = request.headers.get('X-Forwarded-Proto');
+                const wsProtocol = (forwardedProto === 'https' || url.protocol === 'https:') ? 'wss:' : 'ws:';
+                const websocketUrl = `${wsProtocol}//${url.host}/api/agent/${agentId}/ws`;
 
                 const responseData: AgentConnectionData = {
                     websocketUrl,
