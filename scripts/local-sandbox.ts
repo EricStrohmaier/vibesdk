@@ -14,6 +14,25 @@ import { execSync, spawn, type ChildProcess } from 'child_process';
 const PORT = Number(process.env.LOCAL_SANDBOX_PORT) || 8976;
 const WORKSPACE_ROOT = join(process.cwd(), '.local-workspaces');
 
+const LOCAL_TO_EXTERNAL_PORT: Record<number, number> = {
+	4100: 5173,
+	4101: 8008,
+};
+
+function buildPreviewUrl(port: number): string {
+	const replitDomain = process.env.REPLIT_DEV_DOMAIN;
+	if (replitDomain) {
+		const externalPort = LOCAL_TO_EXTERNAL_PORT[port];
+		if (externalPort) {
+			const firstDot = replitDomain.indexOf('.');
+			const subdomain = replitDomain.slice(0, firstDot);
+			const suffix = replitDomain.slice(firstDot);
+			return `https://${subdomain}-${externalPort}${suffix}`;
+		}
+	}
+	return `http://localhost:${port}`;
+}
+
 interface LocalInstance {
 	id: string;
 	projectName: string;
@@ -192,7 +211,7 @@ const server = Bun.serve({
 					success: true,
 					runId: inst.id,
 					processId: inst.process?.pid ? String(inst.process.pid) : undefined,
-					previewURL: `http://localhost:${inst.port}`,
+					previewURL: buildPreviewUrl(inst.port),
 					message: `Local instance created at ${inst.workDir}`,
 				});
 			}
@@ -203,7 +222,7 @@ const server = Bun.serve({
 					runId: inst.id,
 					startTime: inst.startTime,
 					uptime: (Date.now() - new Date(inst.startTime).getTime()) / 1000,
-					previewURL: `http://localhost:${inst.port}`,
+					previewURL: buildPreviewUrl(inst.port),
 					directory: inst.workDir,
 					serviceDirectory: inst.workDir,
 				}));
@@ -229,7 +248,7 @@ const server = Bun.serve({
 							runId: inst.id,
 							startTime: inst.startTime,
 							uptime: (Date.now() - new Date(inst.startTime).getTime()) / 1000,
-							previewURL: `http://localhost:${inst.port}`,
+							previewURL: buildPreviewUrl(inst.port),
 							directory: inst.workDir,
 							serviceDirectory: inst.workDir,
 							processId: inst.process?.pid ? String(inst.process.pid) : undefined,
@@ -245,7 +264,7 @@ const server = Bun.serve({
 						success: true,
 						pending: false,
 						isHealthy: isRunning,
-						previewURL: `http://localhost:${inst.port}`,
+						previewURL: buildPreviewUrl(inst.port),
 						processId: inst.process?.pid ? String(inst.process.pid) : undefined,
 					});
 				}
