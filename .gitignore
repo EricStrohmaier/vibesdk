@@ -41,6 +41,8 @@ test.ts
 temp/
 
 templates
+.local-templates
+.local-workspaces
 debugging.ipynb
 
 #bun.lock

@@ -1,6 +1,9 @@
 # Security Configuration
 #CUSTOM_DOMAIN="your-domain.com" # Your custom domain for CORS
-#ENVIRONMENT="prod" # Options: dev, staging, prod
+ENVIRONMENT="dev" # Options: dev, staging, prod
+
+# Sandbox service type: leave empty for local dev (uses LocalSandboxService)
+#SANDBOX_SERVICE_TYPE=""
 
 # Cloudflare Credentials (Required for manual deployment via `bun run deploy`)
 # These are automatically provided when using "Deploy to Cloudflare" button

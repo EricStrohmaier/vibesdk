@@ -37,6 +37,7 @@ import { env } from 'cloudflare:workers'
 import { ZipExtractor } from './zipExtractor';
 import { FileTreeBuilder } from './fileTreeBuilder';
 import { DeploymentTarget } from 'worker/agents/core/types';
+import { isLocalTemplatesAvailable, localListTemplates, localGetTemplateDetails } from './localTemplateLoader';
 
 /**
  * Streaming event for enhanced command execution
@@ -81,7 +82,7 @@ export abstract class BaseSandboxService {
             if (response === null) {
                 throw new Error(`Failed to fetch template catalog: Template catalog not found`);
             }
-            
+
             const templates = await response.json() as TemplateInfo[];
 
             // For now, just filter out *next* templates
@@ -102,6 +103,10 @@ export abstract class BaseSandboxService {
                 count: filteredTemplates.length
             };
         } catch (error) {
+            if (isLocalTemplatesAvailable()) {
+                console.log('[BaseSandboxService] R2 unavailable, using local templates');
+                return localListTemplates();
+            }
             return {
                 success: false,
                 templates: [],
@@ -201,6 +206,10 @@ export abstract class BaseSandboxService {
                 templateDetails
             };
         } catch (error) {
+            if (isLocalTemplatesAvailable()) {
+                console.log(`[BaseSandboxService] R2 unavailable for template '${templateName}', using local loader`);
+                return localGetTemplateDetails(templateName);
+            }
             return {
                 success: false,
                 error: `Failed to get template details: ${error instanceof Error ? error.message : 'Unknown error'}`

@@ -1,10 +1,15 @@
-modules = ["nodejs-20", "python-3.12", "web", "bash"]
+modules = ["nodejs-20", "web", "bash"]
+
 [agent]
 expertMode = true
 stack = "BEST_EFFORT_FALLBACK"
 
 [nix]
 channel = "stable-25_05"
+
+[env]
+DEV_MODE = "true"
+ENVIRONMENT = "dev"
 
 [workflows]
 runButton = "Project"
@@ -16,10 +21,10 @@ author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
-args = "Start application"
+args = "Start Dev Server"
 
 [[workflows.workflow]]
-name = "Start application"
+name = "Start Dev Server"
 author = "agent"
 
 [workflows.workflow.metadata]
@@ -27,8 +32,24 @@ outputType = "webview"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "DEV_MODE=true node_modules/.bin/vite --port 5000 --host 0.0.0.0"
+args = "bun run dev"
 waitForPort = 5000
+
+[[workflows.workflow]]
+name = "Setup"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "bun install && bun run db:migrate:local"
+
+[[workflows.workflow]]
+name = "Clone Templates"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "git clone --depth 1 https://github.com/cloudflare/vibesdk-templates.git .local-templates 2>/dev/null || (cd .local-templates && git pull)"
 
 [[ports]]
 localPort = 5000
@@ -39,15 +60,10 @@ localPort = 5001
 externalPort = 4200
 
 [[ports]]
-localPort = 8976
-externalPort = 3001
-
-[[ports]]
-localPort = 9229
+localPort = 8787
 externalPort = 3000
 exposeLocalhost = true
 
 [[ports]]
-localPort = 9230
-externalPort = 3002
-exposeLocalhost = true
+localPort = 8976
+externalPort = 3001
