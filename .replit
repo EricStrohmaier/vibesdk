@@ -65,6 +65,10 @@ task = "shell.exec"
 args = "git clone --depth 1 https://github.com/cloudflare/vibesdk-templates.git .local-templates 2>/dev/null || (cd .local-templates && git pull)"
 
 [[ports]]
+localPort = 4100
+externalPort = 5173
+
+[[ports]]
 localPort = 5000
 externalPort = 80
 
@@ -88,3 +92,8 @@ exposeLocalhost = true
 [[ports]]
 localPort = 8976
 externalPort = 3001
+
+[[ports]]
+localPort = 9230
+externalPort = 5000
+exposeLocalhost = true
