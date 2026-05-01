@@ -4,7 +4,8 @@ import { BaseSandboxService } from "./BaseSandboxService";
 import { env } from 'cloudflare:workers'
 
 export function getSandboxService(sessionId: string, agentId: string): BaseSandboxService {
-    if (env.SANDBOX_SERVICE_TYPE == 'runner') {
+    const serviceType = ((env.SANDBOX_SERVICE_TYPE as string) ?? '').replace(/^["']|["']$/g, '').trim();
+    if (serviceType === 'runner') {
         console.log("[getSandboxService] Using runner service for sandboxing");
         return new RemoteSandboxServiceClient(sessionId);
     }

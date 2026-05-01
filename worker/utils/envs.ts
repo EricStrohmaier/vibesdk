@@ -1,7 +1,13 @@
+function normalizeEnvValue(value: string | undefined): string {
+    return (value ?? '').replace(/^["']|["']$/g, '').trim();
+}
+
 export function isProd(env: Env) {
-    return env.ENVIRONMENT === 'prod' || env.ENVIRONMENT === 'production';
+    const val = normalizeEnvValue(env.ENVIRONMENT);
+    return val === 'prod' || val === 'production';
 }
 
 export function isDev(env: Env) {
-    return env.ENVIRONMENT === 'dev' || env.ENVIRONMENT === 'development' || env.ENVIRONMENT === 'local';
+    const val = normalizeEnvValue(env.ENVIRONMENT);
+    return val === 'dev' || val === 'development' || val === 'local';
 }

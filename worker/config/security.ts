@@ -41,29 +41,43 @@ export function getConfigurableSecurityDefaults(): ConfigurableSecuritySettings 
  */
 export function getAllowedOrigins(env: Env): string[] {
     const origins: string[] = [];
-    
+
     // Production domains
     if (env.CUSTOM_DOMAIN) {
         origins.push(`https://${env.CUSTOM_DOMAIN}`);
     }
-    
+
     // Development origins (only in development)
     if (isDev(env)) {
         origins.push('http://localhost:3000');
+        origins.push('http://localhost:5000');
         origins.push('http://localhost:5173');
         origins.push('http://localhost:8787');
         origins.push('http://127.0.0.1:3000');
+        origins.push('http://127.0.0.1:5000');
         origins.push('http://127.0.0.1:5173');
         origins.push('http://127.0.0.1:8787');
     }
-    
+
     return origins;
 }
 
 export function isOriginAllowed(env: Env, origin: string): boolean {
     const allowedOrigins = getAllowedOrigins(env);
     if (!origin) return false;
-    
+
+    // In dev mode, also allow Replit and other dev hosting origins
+    if (isDev(env)) {
+        try {
+            const url = new URL(origin);
+            if (url.hostname.endsWith('.replit.dev') || url.hostname.endsWith('.repl.co')) {
+                return true;
+            }
+        } catch {
+            // invalid origin URL
+        }
+    }
+
     // Check against allowed origins
     return allowedOrigins.includes(origin);
 }
@@ -74,7 +88,7 @@ export function isOriginAllowed(env: Env, origin: string): boolean {
  */
 export function getCORSConfig(env: Env): CORSConfig {
     return {
-        origin: getAllowedOrigins(env),
+        origin: (origin: string) => isOriginAllowed(env, origin) ? origin : null,
         allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
         allowHeaders: [
             'Content-Type',
