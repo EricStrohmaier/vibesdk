@@ -48,6 +48,11 @@ const instances = new Map<string, LocalInstance>();
  */
 const LOCAL_TO_EXTERNAL_PORT: Record<number, number> = {
         4100: 5173,
+        4101: 8008,
+        4102: 8081,
+        4103: 8082,
+        4104: 8083,
+        4105: 8084,
 };
 
 /**
