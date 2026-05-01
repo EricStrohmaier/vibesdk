@@ -251,4 +251,5 @@ export class RemoteSandboxServiceClient extends BaseSandboxService{
     }
 }
 
-RemoteSandboxServiceClient.init(env.SANDBOX_SERVICE_URL, env.SANDBOX_SERVICE_API_KEY);
+const stripQuotes = (s: string) => s?.replace(/^["']|["']$/g, '').trim();
+RemoteSandboxServiceClient.init(stripQuotes(env.SANDBOX_SERVICE_URL), stripQuotes(env.SANDBOX_SERVICE_API_KEY));
