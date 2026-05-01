@@ -14,6 +14,7 @@ import { execSync, spawn, type ChildProcess } from 'child_process';
 const PORT = Number(process.env.LOCAL_SANDBOX_PORT) || 8976;
 const WORKSPACE_ROOT = join(process.cwd(), '.local-workspaces');
 
+
 /**
  * Maps local sandbox ports to Replit external port numbers.
  * Must match the [[ports]] entries in .replit.
@@ -32,19 +33,20 @@ const LOCAL_TO_EXTERNAL_PORT: Record<number, number> = {
  * Inside Replit the browser cannot reach localhost, so we construct
  * the public proxied HTTPS URL using REPLIT_DEV_DOMAIN.
  */
+
 function buildPreviewUrl(port: number): string {
-        const replitDomain = process.env.REPLIT_DEV_DOMAIN;
-        if (replitDomain) {
-                const externalPort = LOCAL_TO_EXTERNAL_PORT[port];
-                if (externalPort) {
-                        const dot = replitDomain.indexOf('.');
-                        const subdomain = replitDomain.slice(0, dot);
-                        const suffix = replitDomain.slice(dot);
-                        return `https://${subdomain}-${externalPort}${suffix}`;
-                }
-                console.warn(`[sandbox] No Replit external port mapping for local port ${port} — falling back to localhost URL`);
-        }
-        return `http://localhost:${port}`;
+	const replitDomain = process.env.REPLIT_DEV_DOMAIN;
+	if (replitDomain) {
+		const externalPort = LOCAL_TO_EXTERNAL_PORT[port];
+		if (externalPort) {
+			const firstDot = replitDomain.indexOf('.');
+			const subdomain = replitDomain.slice(0, firstDot);
+			const suffix = replitDomain.slice(firstDot);
+			return `https://${subdomain}-${externalPort}${suffix}`;
+		}
+	}
+	return `http://localhost:${port}`;
+
 }
 
 interface LocalInstance {
@@ -243,6 +245,7 @@ const server = Bun.serve({
                                 return json({ success: true, instances: list, count: list.length });
                         }
 
+
                         // Match /instances/:id routes
                         const instanceMatch = path.match(/^\/instances\/([^/]+)(\/.*)?$/);
                         if (instanceMatch) {
@@ -253,6 +256,7 @@ const server = Bun.serve({
                                 if (!inst) {
                                         return json({ success: false, error: `Instance ${instanceId} not found` }, 404);
                                 }
+
 
                                 // GET /instances/:id
                                 if (method === 'GET' && subPath === '') {
@@ -282,8 +286,7 @@ const server = Bun.serve({
                                                 processId: inst.process?.pid ? String(inst.process.pid) : undefined,
                                         });
                                 }
-
-                                // POST /instances/:id/files -- write files
+                         // POST /instances/:id/files -- write files
                                 if (method === 'POST' && subPath === '/files') {
                                         const body = await req.json();
                                         const results: Array<{ file: string; success: boolean; error?: string }> = [];
