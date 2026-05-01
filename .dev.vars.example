@@ -2,8 +2,10 @@
 #CUSTOM_DOMAIN="your-domain.com" # Your custom domain for CORS
 ENVIRONMENT="dev" # Options: dev, staging, prod
 
-# Sandbox service type: leave empty for local dev (uses LocalSandboxService)
-#SANDBOX_SERVICE_TYPE=""
+# Local sandbox server (run: bun run scripts/local-sandbox.ts)
+SANDBOX_SERVICE_TYPE="runner"
+SANDBOX_SERVICE_URL="http://localhost:8976"
+SANDBOX_SERVICE_API_KEY="local-dev"
 
 # Cloudflare Credentials (Required for manual deployment via `bun run deploy`)
 # These are automatically provided when using "Deploy to Cloudflare" button

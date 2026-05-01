@@ -7,6 +7,7 @@
                 "setup": "tsx scripts/setup.ts",
                 "prepare": "husky",
                 "dev": "DEV_MODE=true vite",
+                "dev:sandbox": "bun run scripts/local-sandbox.ts",
                 "build": "tsc -b --incremental && vite build",
                 "typecheck": "tsc -b --incremental --noEmit",
                 "lint": "eslint .",

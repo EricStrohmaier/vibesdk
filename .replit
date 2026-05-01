@@ -21,6 +21,10 @@ author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
+args = "Start Sandbox Server"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
 args = "Start Dev Server"
 
 [[workflows.workflow]]
@@ -34,6 +38,15 @@ outputType = "webview"
 task = "shell.exec"
 args = "bun run dev"
 waitForPort = 5000
+
+[[workflows.workflow]]
+name = "Start Sandbox Server"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "bun run scripts/local-sandbox.ts"
+waitForPort = 8976
 
 [[workflows.workflow]]
 name = "Setup"
