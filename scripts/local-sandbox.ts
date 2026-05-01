@@ -358,7 +358,7 @@ const server = Bun.serve({
                                                                                 inst.startTime,
                                                                         ).getTime()) /
                                                                 1000,
-                                                        previewURL: `http://localhost:${inst.port}`,
+                                                        previewURL: buildPreviewUrl(inst.port),
                                                         directory: inst.workDir,
                                                         serviceDirectory:
                                                                 inst.workDir,
@@ -385,7 +385,7 @@ const server = Bun.serve({
                                                 success: true,
                                                 pending: false,
                                                 isHealthy: isRunning,
-                                                previewURL: `http://localhost:${inst.port}`,
+                                                previewURL: buildPreviewUrl(inst.port),
                                                 processId: inst.process?.pid
                                                         ? String(
                                                                   inst.process
