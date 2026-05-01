@@ -573,6 +573,12 @@ export async function infer<OutputSchema extends z.AnyZodObject>({
         // Remove [*.] from model name
         modelName = modelName.replace(/\[.*?\]/, '');
 
+        // Strip provider prefix for direct API calls (e.g. google-ai-studio/gemini-2.5-flash -> gemini-2.5-flash)
+        let apiModelName = modelName;
+        if (modelConfig.directOverride && apiModelName.includes('/')) {
+            apiModelName = apiModelName.split('/').slice(1).join('/');
+        }
+
         const client = new OpenAI({ apiKey, baseURL: baseURL, defaultHeaders });
         const schemaObj =
             schema && schemaName && !format
@@ -690,7 +696,7 @@ export async function infer<OutputSchema extends z.AnyZodObject>({
                 ...schemaObj,
                 ...extraBody,
                 ...toolsOpts,
-                model: modelName,
+                model: apiModelName,
                 messages: messagesToPass as OpenAI.ChatCompletionMessageParam[],
                 max_completion_tokens: maxTokens || 150000,
                 stream: stream ? true : false,
