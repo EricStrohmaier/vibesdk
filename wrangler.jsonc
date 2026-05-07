@@ -86,6 +86,8 @@
 			{
 				"class_name": "UserAppSandboxService",
 				"name": "Sandbox",
+				"script_name": "vibesdk",
+				"remote": true,
 			},
 			{
 				"class_name": "DORateLimitStore",
