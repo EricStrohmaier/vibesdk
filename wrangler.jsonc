@@ -62,13 +62,9 @@
 			"image": "./SandboxDockerfile",
 			// "image": "registry.cloudflare.com/vibesdk-production-userappsandboxservice:cfe197fc",
 			// Altering max_instances value will have no effect. Please use the MAX_SANDBOX_INSTANCES var instead.
-			"max_instances": 1400,
+			"max_instances": 5,
 			// ATTENTION: Altering instance_type value will have no effect. Please use the SANDBOX_INSTANCE_TYPE var instead.
-			"instance_type": {
-				"vcpu": 4,
-				"memory_mib": 12288,
-				"disk_mb": 10240,
-			},
+			"instance_type": "standard-3",
 			"rollout_step_percentage": 100,
 		},
 	],
@@ -134,39 +130,38 @@
 		},
 	],
 	"routes": [
-		{
-			"pattern": "build.cloudflare.dev",
-			"custom_domain": true,
-		},
-		{
-			"pattern": "*build-preview.cloudflare.dev/*",
-			"custom_domain": false,
-			"zone_id": "db01fac4261b2604aacad8410443a3e2",
-		},
-	],
+        {
+            "pattern": "app.alpen.digital",
+            "custom_domain": true
+        },
+        {
+            "pattern": "*app.alpen.digital/*",
+            "custom_domain": false,
+            "zone_id": "cab1c72adf566531cc539e70e1ab661d"
+        }
+    ],
 	"vars": {
-		"TEMPLATES_REPOSITORY": "https://github.com/cloudflare/vibesdk-templates",
-		"DISPATCH_NAMESPACE": "vibesdk-default-namespace",
-		"ENABLE_READ_REPLICAS": "true",
-		"CLOUDFLARE_AI_GATEWAY": "vibesdk-gateway",
-		"PLATFORM_CAPABILITIES": {
-			"features": {
-				"app": {
-					"enabled": true,
-				},
-				"presentation": {
-					"enabled": false,
-				},
-				"general": {
-					"enabled": false,
-				},
-			},
-			"version": "1.0.0",
-		},
-		"CUSTOM_DOMAIN": "app.alpen.digital",
-		"MAX_SANDBOX_INSTANCES": "5",
-		"SANDBOX_INSTANCE_TYPE": "standard-3",
-	},
+        "TEMPLATES_REPOSITORY": "https://github.com/cloudflare/vibesdk-templates",
+        "DISPATCH_NAMESPACE": "vibesdk-default-namespace",
+        "ENABLE_READ_REPLICAS": "true",
+        "CLOUDFLARE_AI_GATEWAY": "vibesdk-gateway",
+        "PLATFORM_CAPABILITIES": {
+            "features": {
+                "app": {
+                    "enabled": true
+                },
+                "presentation": {
+                    "enabled": false
+                },
+                "general": {
+                    "enabled": false
+                }
+            },
+            "version": "1.0.0"
+        },
+        "MAX_SANDBOX_INSTANCES": "5",
+        "SANDBOX_INSTANCE_TYPE": "standard-3"
+    },
 	"workers_dev": false,
 	"preview_urls": false,
 }
