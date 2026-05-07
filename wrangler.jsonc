@@ -46,6 +46,7 @@
          */
         "ai": {
                 "binding": "AI",
+                "remote": true,
         },
         "dev": {
                 "enable_containers": false,

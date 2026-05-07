@@ -1,0 +1,28 @@
+_modules/@cloudflare/workerd-linux-64/bin/workerd@4e65a70 /home/runner/workspace/node_modules/miniflare/node_modules/workerd/node_modules/@cloudflare/workerd-linux-64/bin/workerd@2d02494 /home/runner/workspace/node_modules/miniflare/node_modules/workerd/node_modules/@cloudflare/workerd-linux-64/bin/workerd@2d02521; sentryErrorContext = jsgInternalError; wdErrId = moa8ddugai2esei3tsv3eu6m
+e = kj/compat/tls.c++:256: failed: TLS peer's certificate is not trusted; reason = unable to get local issuer certificate
+stack: /home/runner/workspace/node_modules/miniflare/node_modules/workerd/node_modules/@cloudflare/workerd-linux-64/bin/workerd@3230630 /home/runner/workspace/node_modules/miniflare/node_modules/workerd/node_modules/@cloudflare/workerd-linux-64/bin/workerd@3230c46 /home/runner/workspace/node_modules/miniflare/node_modules/workerd/node_modules/@cloudflare/workerd-linux-64/bin/workerd@4e60aca /home/runner/workspace/node_modules/miniflare/node_modules/workerd/node_modules/@cloudflare/workerd-linux-64/bin/workerd@3237e20 /home/runner/workspace/node_modules/miniflare/node_modules/workerd/node_modules/@cloudflare/workerd-linux-64/bin/workerd@4e8b490 /home/runner/workspace/node_modules/miniflare/node_modules/workerd/node_modules/@cloudflare/workerd-linux-64/bin/workerd@4e8c6f0 /home/runner/workspace/node_modules/miniflare/node_modules/workerd/node_modules/@cloudflare/workerd-linux-64/bin/workerd@3461289 /home/runner/workspace/node_modules/miniflare/node_modules/workerd/node_modules/@cloudflare/workerd-linux-64/bin/workerd@34616ba /home/runner/workspace/node_modules/miniflare/node_modules/workerd/node_modules/@cloudflare/workerd-linux-64/bin/workerd@4e7b880 /home/runner/workspace/node_modules/miniflare/node_modules/workerd/node_modules/@cloudflare/workerd-linux-64/bin/workerd@2a42f60 /home/runner/workspace/node_modules/miniflare/node_modules/workerd/node_modules/@cloudflare/workerd-linux-64/bin/workerd@4e80f80 /home/runner/workspace/node_modules/miniflare/node_modules/workerd/node_modules/@cloudflare/workerd-linux-64/bin/workerd@1f9b6e0 /home/runner/workspace/node_modules/miniflare/node_modules/workerd/node_modules/@cloudflare/workerd-linux-64/bin/workerd@2b49769 /home/runner/workspace/node_modules/miniflare/node_modules/workerd/node_modules/@cloudflare/workerd-linux-64/bin/workerd@1f88290 /home/runner/workspace/node_modules/miniflare/node_modules/workerd/node_modules/@cloudflare/workerd-linux-64/bin/workerd@2cde520 /home/runner/workspace/node_modules/miniflare/node_modules/workerd/node_modules/@cloudflare/workerd-linux-64/bin/workerd@2a13f30; sentryErrorContext = jsgInternalError; wdErrId = 7pl5qhrphotk01uoac7khq1s
+Failed to get inference response from OpenAI: Error: Connection error.
+Error in inferWithSchemaOutput: APIConnectionError: Connection error.
+    at OpenAI.makeRequest (/home/runner/workspace/node_modules/.vite/deps_vibesdk/openai.js:5117:10)
+    at infer (/home/runner/workspace/worker/agents/inferutils/core.ts:684:24)
+    ... 3 lines matching cause stack trace ...
+    at CodeGeneratorAgent.initialize (/home/runner/workspace/worker/agents/core/codingAgent.ts:139:9) {
+  status: undefined,
+  headers: undefined,
+  requestID: undefined,
+  error: undefined,
+  code: undefined,
+  param: undefined,
+  type: undefined,
+  cause: Error: internal error; reference = 7pl5qhrphotk01uoac7khq1s
+      at OpenAI.fetchWithTimeout (/home/runner/workspace/node_modules/.vite/deps_vibesdk/openai.js:5192:11)
+      at OpenAI.makeRequest (/home/runner/workspace/node_modules/.vite/deps_vibesdk/openai.js:5093:20)
+      at infer (/home/runner/workspace/worker/agents/inferutils/core.ts:684:24)
+      at executeInference (/home/runner/workspace/worker/agents/inferutils/infer.ts:159:37)
+      at generateBlueprint (/home/runner/workspace/worker/agents/planning/blueprint.ts:414:37)
+      at PhasicCodingBehavior.initialize (/home/runner/workspace/worker/agents/core/behaviors/phasic.ts:77:27)
+      at CodeGeneratorAgent.initialize (/home/runner/workspace/worker/agents/core/codingAgent.ts:139:9) {
+    remote: true
+  }
+}
+{"level":"error","time":"2026-05-07T11:29:35.068Z","component":"InferenceUtils","msg":"Error during blueprint operation (attempt 5/5):","error":{"name":"Error","message":"Connection error.","stack":"Error: Connection error.\n    at OpenAI.makeRequest (/home/runner/workspace/node_modules/.vite/deps_vibesdk/openai.js:5117:10)\n    at infer (/home/runner/workspace/worker/agents/inferutils/core.ts:684:24)\n    at executeInference (/home/runner/workspace/worker/agents/inferutils/infer.ts:159:37)\n
