@@ -48,13 +48,14 @@
 		"binding": "AI",
 		"remote": true,
 	},
-	"dispatch_namespaces": [
-		{
-			"binding": "DISPATCHER",
-			"namespace": "vibesdk-default-namespace",
-			"remote": true,
-		},
-	],
+	// Workers for Platforms (Enterprise only) - disabled for non-Enterprise accounts
+	// "dispatch_namespaces": [
+	// 	{
+	// 		"binding": "DISPATCHER",
+	// 		"namespace": "vibesdk-default-namespace",
+	// 		"remote": true,
+	// 	},
+	// ],
 	"containers": [
 		{
 			"class_name": "UserAppSandboxService",
