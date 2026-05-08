@@ -1023,14 +1023,6 @@ export class SandboxSdkClient extends BaseSandboxService {
             }
             this.logger.info('Creating sandbox instance', { instanceId, projectName });
 
-            // In local dev (Replit / miniflare), Cloudflare Containers cannot run.
-            // Throw the standard container error BEFORE touching this.sandbox so that
-            // workerd never tries to initialise the container DO stub — which would
-            // crash the worker process and drop all WebSocket connections.
-            if (isDev(env)) {
-                throw new Error('Containers have not been enabled for this Durable Object class. Have you correctly setup your Wrangler config? More info: https://developers.cloudflare.com/containers/get-started/#configuration');
-            }
-
             const dontTouchFile = files.find(f => f.filePath === '.donttouch_files.json');
             const dontTouchFiles = dontTouchFile ? JSON.parse(dontTouchFile.fileContents) : [];
             

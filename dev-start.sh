@@ -48,5 +48,16 @@ http.createServer((req, res) => {
 });
 " &
 
+# Export Cloudflare credentials to shell so the Vite plugin can use remoteBindings
+# Values come from .dev.vars which holds production tokens
+if [ -f .dev.vars ]; then
+  while IFS='=' read -r key value; do
+    [[ "$key" =~ ^#.*$ || -z "$key" ]] && continue
+    value="${value%\"}"
+    value="${value#\"}"
+    export "$key=$value"
+  done < .dev.vars
+fi
+
 export DEV_MODE=true
 exec node_modules/.bin/vite --port 5000 --host 0.0.0.0
