@@ -618,7 +618,8 @@ export abstract class BaseCodingBehavior<TState extends BaseProjectState>
             const templateDetails = this.getTemplateDetails();
             let analysisResponse: StaticAnalysisResponse;
 
-            if (templateDetails?.renderMode === 'browser') {
+            if (templateDetails?.renderMode === 'browser' || !this.state.sandboxInstanceId) {
+                // Use in-memory analysis when no sandbox is available (browser-rendered or local dev)
                 analysisResponse = await this.runInMemoryAnalysis(files);
             } else {
                 analysisResponse = await this.deploymentManager.runStaticAnalysis(files);
@@ -637,7 +638,7 @@ export abstract class BaseCodingBehavior<TState extends BaseProjectState>
 
             return analysisResponse;
         } catch (error) {
-            this.broadcastError("Failed to lint code", error);
+            this.logger.warn('Static analysis failed, skipping:', error);
             return { success: false, lint: { issues: [], }, typecheck: { issues: [], } };
         }
     }
@@ -1212,11 +1213,7 @@ export abstract class BaseCodingBehavior<TState extends BaseProjectState>
                 await this.deployToSandbox();
                 
                 if (!this.state.sandboxInstanceId) {
-                    this.logger.error('Failed to deploy to sandbox service');
-                    this.broadcast(WebSocketMessageResponses.CLOUDFLARE_DEPLOYMENT_ERROR, {
-                        message: 'Deployment failed: Failed to deploy to sandbox service',
-                        error: 'Sandbox service unavailable'
-                    });
+                    this.logger.warn('Sandbox unavailable (cloud-only); skipping Cloudflare deployment in local dev.');
                     return null;
                 }
             }
