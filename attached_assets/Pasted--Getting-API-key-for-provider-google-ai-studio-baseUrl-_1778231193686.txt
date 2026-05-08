@@ -1,0 +1,28 @@
+
+Getting API key for provider:  google-ai-studio
+baseUrl: http://localhost:8889/v1/53b790c6264d7b1c4afe8a2ab231bb9b/vibesdk-gateway/compat, modelName: google-ai-studio/gemini-2.5-flash-lite
+Token optimization: Original messages size ~112 chars, optimized size ~112 chars
+Running inference with google-ai-studio/gemini-2.5-flash-lite using structured output with undefined format, reasoning effort: undefined, max tokens: 100, temperature: 0.6, frequency_penalty: undefined, baseURL: http://localhost:8889/v1/53b790c6264d7b1c4afe8a2ab231bb9b/vibesdk-gateway/compat
+Inference response received
+Total tokens used in prompt: 19
+{"level":"info","time":"2026-05-08T09:05:50.019Z","component":"App","msg":"Handling API request for: http://78368ebd-c4d3-42c4-b63f-5caf5d18d6d3-00-2zooqc17myukp.riker.replit.dev/api/apps/public?page=1&limit=6&sort=popular&period=week"}
+requirement { required: false, level: 'public' } for user null
+{"level":"info","time":"2026-05-08T09:05:58.056Z","component":"App","msg":"Handling API request for: http://78368ebd-c4d3-42c4-b63f-5caf5d18d6d3-00-2zooqc17myukp.riker.replit.dev/api/agent"}
+requirement { required: true, level: 'authenticated' } for user {
+  id: 'd73d3f0b-f33a-4c1c-9a27-5fb1ee55eb7a',
+  email: 'eric.strohmaier00@gmail.com',
+  displayName: 'er',
+  username: undefined,
+  avatarUrl: undefined,
+  bio: undefined,
+  timezone: 'UTC',
+  provider: 'email',
+  emailVerified: true,
+  createdAt: 2026-05-08T08:51:49.000Z
+}
+{"level":"info","time":"2026-05-08T09:05:58.088Z","component":"CodingAgentController","msg":"Starting code generation process"}
+{"level":"info","time":"2026-05-08T09:05:58.088Z","component":"CodingAgentController","msg":"Resolved behaviorType: phasic, projectType: app for agent 87c6bd4a-65e9-48e0-a1e2-1f316cff00b8"}
+{"level":"info","time":"2026-05-08T09:05:58.092Z","component":"CodingAgentController","msg":"Initialized inference context for user d73d3f0b-f33a-4c1c-9a27-5fb1ee55eb7a","modelConfigsCount":0}
+{"level":"info","time":"2026-05-08T09:05:58.092Z","component":"CodingAgentController","msg":"Creating project of type: app"}
+{"level":"error","time":"2026-05-08T09:05:58.123Z","component":"CodingAgentController","msg":"Error starting code generation","error":{"name":"Error","message":"Failed to fetch templates from sandbox service, Failed to fetch templates: Failed to fetch template catalog: Template catalog not found","stack":"Error: Failed to fetch templates from sandbox service, Failed to fetch templates: Failed to fetch template catalog: Template catalog not found\n    at handleAITemplateSelection (/home/runner/workspace/worker/agents/index.ts:141:15)\n    at CodingAgentController.startCodeGeneration (/home/runner/workspace/worker/api/controllers/agent/controller.ts:143:83)\n    at /home/runner/workspace/worker/api/honoAdapter.ts:35:16\n    at dispatch (/home/runner/workspace/node_modules/.vite/deps_vibesdk/hono-DCmC4_-N.js:17:11)\n    at /home/runner/workspace/worker/middleware/auth/routeAuth.ts:237:16\n    at dispatch (/home/runner/workspace/node_modules/.vite/deps_vibesdk/hono-DCmC4_-N.js:17:11)\n    at /home/runner/workspace/worker/middleware/auth/routeAuth.ts:237:16\n    at dispatch (/home/runner/workspace/node_modules/.vite/deps_vibesdk/hono-DCmC4_-N.js:17:11)\n    at /home/runner/workspace/worker/app.ts:83:9\n    at dispatch (/home/runner/workspace/node_modules/.vite/deps_vibesdk/hono-DCmC4_-N.js:17:11)"}}
+{"level":"error","time":"2026-05-08T09:05:58.128Z","component":"ErrorHandling","msg":"Error during start code generation","error":"Failed to fetch templates from sandbox service, Failed to fetch templates: Failed to fetch template catalog: Template catalog not found","stack":"Error: Failed to fetch templates from sandbox service, Failed to fetch templates: Failed to fetch template catalog: Template catalog not found\n    at handleAITemplateSelection (/home/runner/workspace/worker/agents/index.ts:141:15)\n    at CodingAgentController.startCodeGeneration (/home/runner/workspace/worker/api/controllers/agent/controller.ts:143:83)\n    at /home/runner/workspace/worker/api/honoAdapter.ts:35:16\n    at dispatch (/home/runner/workspace/node_modules/.vite/deps_vibesdk/hono-DCmC4_-N.js:17:11)\n    at /home/runner/workspace/worker/middleware/auth/routeAuth.ts:237:16\n    at dispatch (/home/runner/workspace/node_modules/.vite/deps_vibesdk/hono-DCmC4_-N.js:17:11)\n    at /home/runner/workspace/worker/middleware/auth/routeAuth.ts:237:16\n    at dispatch (/home/runner/workspace/node_modules/.vite/deps_vibesdk/hono-DCmC4_-N.js:17:11)\n    at /home/runner/workspace/worker/app.ts:83:9\n    at dispatch (/home/runner/workspace/node_modules/.vite/deps_vibesdk/hono-DCmC4_-N.js:17:11)"}

@@ -138,7 +138,17 @@ async function handleAITemplateSelection(args: Omit<TemplateQueryArgs, 'selected
 
     const templatesResponse = await SandboxSdkClient.listTemplates();
     if (!templatesResponse?.success) {
-        throw new Error(`Failed to fetch templates from sandbox service, ${templatesResponse.error}`);
+        logger.warn('Templates unavailable, falling back to scratch mode', { error: templatesResponse?.error });
+        const scratch = createScratchTemplateDetails();
+        const fallbackSelection: TemplateSelection = {
+            selectedTemplateName: null,
+            reasoning: 'Templates unavailable in local dev (R2 not seeded); using scratch',
+            useCase: 'General',
+            complexity: 'moderate',
+            styleSelection: 'Custom',
+            projectType: projectType === 'auto' ? 'app' : projectType,
+        } as TemplateSelection;
+        return { templateDetails: scratch, selection: fallbackSelection, projectType: fallbackSelection.projectType as ProjectType };
     }
 
     const aiSelection = await selectTemplate({
