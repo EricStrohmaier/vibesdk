@@ -26,13 +26,13 @@ import { toast } from 'sonner';
 import { createRepairingJSONParser } from '@/utils/ndjson-parser/ndjson-parser';
 
 const isPhasicState = (state: AgentState): state is PhasicState => {
-	const record = state as unknown as Record<string, unknown>;
-	const behaviorType = record.behaviorType;
-	if (behaviorType === 'phasic') return true;
-	if (behaviorType === undefined || behaviorType === null) {
-		return Array.isArray(record.generatedPhases);
-	}
-	return false;
+        const record = state as unknown as Record<string, unknown>;
+        const behaviorType = record.behaviorType;
+        if (behaviorType === 'phasic') return true;
+        if (behaviorType === undefined || behaviorType === null) {
+                return Array.isArray(record.generatedPhases);
+        }
+        return false;
 };
 
 export interface HandleMessageDeps {
@@ -159,6 +159,19 @@ export function createWebSocketMessageHandler(deps: HandleMessageDeps) {
             onTerminalMessage,
             clearDeploymentTimeout,
         } = deps;
+
+        // Normalize CF agents double-encoded state messages.
+        // The agents lib sometimes sends {type: '{"state":{...}}'} instead of {type: 'cf_agent_state', state: {...}}.
+        if (typeof message.type === 'string' && message.type.startsWith('{')) {
+            try {
+                const inner = JSON.parse(message.type) as Record<string, unknown>;
+                if (inner && 'state' in inner) {
+                    message = { type: 'cf_agent_state', ...inner } as WebSocketMessage;
+                }
+            } catch {
+                // not JSON — leave as-is
+            }
+        }
 
         // Log messages except for frequent ones
         if (message.type !== 'file_chunk_generated' && message.type !== 'cf_agent_state' && message.type.length <= 50) {
@@ -522,29 +535,29 @@ export function createWebSocketMessageHandler(deps: HandleMessageDeps) {
                 break;
             }
 
-			case 'file_generating': {
-				setFiles((prev) => setFileGenerating(prev, message.filePath));
-				deps.onPresentationFileEvent?.({ type: 'file_generating', path: message.filePath });
-				break;
-			}
+                        case 'file_generating': {
+                                setFiles((prev) => setFileGenerating(prev, message.filePath));
+                                deps.onPresentationFileEvent?.({ type: 'file_generating', path: message.filePath });
+                                break;
+                        }
 
-			case 'file_chunk_generated': {
-				setFiles((prev) => appendFileChunk(prev, message.filePath, message.chunk));
-				deps.onPresentationFileEvent?.({ type: 'file_chunk', path: message.filePath, chunk: message.chunk });
-				break;
-			}
+                        case 'file_chunk_generated': {
+                                setFiles((prev) => appendFileChunk(prev, message.filePath, message.chunk));
+                                deps.onPresentationFileEvent?.({ type: 'file_chunk', path: message.filePath, chunk: message.chunk });
+                                break;
+                        }
 
-			case 'file_generated': {
-				setFiles((prev) => setFileCompleted(prev, message.file.filePath, message.file.fileContents));
-				setPhaseTimeline((prev) => updatePhaseFileStatus(
-					prev,
-					message.file.filePath,
-					'completed',
-					message.file.fileContents
-				));
-				deps.onPresentationFileEvent?.({ type: 'file_generated', path: message.file.filePath, contents: message.file.fileContents });
-				break;
-			}
+                        case 'file_generated': {
+                                setFiles((prev) => setFileCompleted(prev, message.file.filePath, message.file.fileContents));
+                                setPhaseTimeline((prev) => updatePhaseFileStatus(
+                                        prev,
+                                        message.file.filePath,
+                                        'completed',
+                                        message.file.fileContents
+                                ));
+                                deps.onPresentationFileEvent?.({ type: 'file_generated', path: message.file.filePath, contents: message.file.fileContents });
+                                break;
+                        }
 
             case 'file_regenerated': {
                 setIsRedeployReady(true);
@@ -1027,6 +1040,13 @@ export function createWebSocketMessageHandler(deps: HandleMessageDeps) {
                 );
                 setMessages(prev => [...prev, rateLimitMessage]);
                 
+                break;
+            }
+
+            case 'static_analysis_results': {
+                const lintCount = (message as unknown as { lint?: { issues?: unknown[] } }).lint?.issues?.length || 0;
+                const typecheckCount = (message as unknown as { typecheck?: { issues?: unknown[] } }).typecheck?.issues?.length || 0;
+                deps.setStaticIssueCount(lintCount + typecheckCount);
                 break;
             }
 

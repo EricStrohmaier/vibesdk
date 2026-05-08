@@ -373,6 +373,14 @@ export class CodingAgentController extends BaseController {
 
                 return CodingAgentController.createSuccessResponse(preview);
             } catch (error) {
+                const msg = error instanceof Error ? error.message : String(error);
+                if (msg.includes('SANDBOX_UNAVAILABLE') || msg.includes('Containers have not been enabled')) {
+                    this.logger.warn('Sandbox unavailable for preview — Cloudflare Containers not enabled on this account', { agentId });
+                    return CodingAgentController.createErrorResponse<AgentPreviewResponse>(
+                        'Preview unavailable: Cloudflare Containers must be enabled on your account. Code is available in the editor.',
+                        503
+                    );
+                }
                 this.logger.error('Failed to deploy preview', { agentId, error });
                 return CodingAgentController.createErrorResponse<AgentPreviewResponse>('Failed to deploy preview', 500);
             }
