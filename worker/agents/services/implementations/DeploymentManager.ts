@@ -415,6 +415,12 @@ export class DeploymentManager extends BaseAgentService<BaseProjectState> implem
                 
                 const errorMsg = error instanceof Error ? error.message : String(error);
 
+                // Non-retryable: container infrastructure unavailable (local dev / miniflare)
+                if (errorMsg.includes('Containers have not been enabled')) {
+                    logger.warn('Container infrastructure unavailable in this environment; sandbox deployment skipped. Generated code is available in the editor.');
+                    throw new Error('SANDBOX_UNAVAILABLE: Cloudflare Containers only run on live Cloudflare infrastructure. Code generation succeeded — files are visible in the editor.');
+                }
+
                 // Handle specific errors that require session reset
                 if (errorMsg.includes('Network connection lost') || 
                     errorMsg.includes('Container service disconnected') || 
