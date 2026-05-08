@@ -71,6 +71,7 @@ export default defineConfig({
                                 '**/node_modules/**',
                                 '**/.wrangler/**',
                                 '**/.git/**',
+                                '**/.local/**',
                         ],
                 },
         },
