@@ -142,7 +142,8 @@ export class CodingAgentController extends BaseController {
 
             const { templateDetails, selection, projectType: finalProjectType } = await getTemplateForQuery(env, inferenceContext, query, projectType, body.images, this.logger, body.selectedTemplate);
 
-            const websocketUrl = `${url.protocol === 'https:' ? 'wss:' : 'ws:'}//${url.host}/api/agent/${agentId}/ws`;
+            const wsProto = (url.protocol === 'https:' || request.headers.get('X-Forwarded-Proto') === 'https' || !url.host.startsWith('localhost') && !url.host.startsWith('127.')) ? 'wss:' : 'ws:';
+            const websocketUrl = `${wsProto}//${url.host}/api/agent/${agentId}/ws`;
             const httpStatusUrl = `${url.origin}/api/agent/${agentId}`;
 
             let uploadedImages: ProcessedImageAttachment[] = [];
@@ -306,9 +307,10 @@ export class CodingAgentController extends BaseController {
                 }
                 this.logger.info(`Successfully connected to existing agent: ${agentId}`);
 
-                // Construct WebSocket URL
+                // Construct WebSocket URL — use wss:// when behind an HTTPS proxy (Replit, Cloudflare)
                 const url = new URL(request.url);
-                const websocketUrl = `${url.protocol === 'https:' ? 'wss:' : 'ws:'}//${url.host}/api/agent/${agentId}/ws`;
+                const wsProto2 = (url.protocol === 'https:' || request.headers.get('X-Forwarded-Proto') === 'https' || !url.host.startsWith('localhost') && !url.host.startsWith('127.')) ? 'wss:' : 'ws:';
+                const websocketUrl = `${wsProto2}//${url.host}/api/agent/${agentId}/ws`;
 
                 const responseData: AgentConnectionData = {
                     websocketUrl,
