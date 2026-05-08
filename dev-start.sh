@@ -1,7 +1,21 @@
 #!/bin/bash
-set -a
-source <(grep -v '^#' .dev.vars | grep -v '^$' | sed 's/^[[:space:]]*//' | grep '=')
-set +a
+
+# Start a TCP-level proxy on port 9229 → 5000.
+# The .replit has both 9229 and 5000 mapped to externalPort=80; Replit routes to the
+# last entry (9229). This proxy transparently forwards all traffic (HTTP + WebSockets)
+# to the real Vite server on 5000.
+node -e "
+const net = require('net');
+net.createServer(src => {
+  const dst = net.createConnection(5000, '127.0.0.1');
+  src.pipe(dst);
+  dst.pipe(src);
+  src.on('error', () => dst.destroy());
+  dst.on('error', () => src.destroy());
+}).listen(9229, '0.0.0.0', () => {
+  process.stderr.write('[proxy] 9229 -> 5000 ready\n');
+});
+" &
 
 export DEV_MODE=true
 exec node_modules/.bin/vite --port 5000 --host 0.0.0.0

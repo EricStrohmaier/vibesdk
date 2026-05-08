@@ -29,7 +29,7 @@ export default defineConfig({
                 svgr(),
                 cloudflare({
                         configPath: 'wrangler.jsonc',
-                        remoteBindings: true,
+                        remoteBindings: false,
                 }),
                 tailwindcss(),
                 // sentryVitePlugin({
