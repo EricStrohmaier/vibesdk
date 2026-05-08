@@ -1071,10 +1071,15 @@ export class SandboxSdkClient extends BaseSandboxService {
                 processId: results.processId,
             };
         } catch (error) {
-            this.logger.error(`Failed to create instance for project ${projectName}`, error);
+            const msg = error instanceof Error ? error.message : String(error);
+            if (msg.includes('Containers have not been enabled') || msg.includes('SANDBOX_UNAVAILABLE')) {
+                this.logger.warn(`Sandbox unavailable for project ${projectName} — Cloudflare Containers not enabled on account`);
+            } else {
+                this.logger.error(`Failed to create instance for project ${projectName}`, error);
+            }
             return {
                 success: false,
-                error: `Failed to create instance: ${error instanceof Error ? error.message : 'Unknown error'}`
+                error: `Failed to create instance: ${msg}`
             };
         }
     }

@@ -334,7 +334,12 @@ export class DeploymentManager extends BaseAgentService<BaseProjectState> implem
             return result;
         } catch (error) {
             // Master timeout reached - all retries exhausted
-            logger.error('Deployment permanently failed after master timeout:', error);
+            const msg = error instanceof Error ? error.message : String(error);
+            if (msg.includes('SANDBOX_UNAVAILABLE') || msg.includes('Containers have not been enabled')) {
+                logger.warn('Deployment skipped — Cloudflare Containers not enabled on this account:', msg);
+            } else {
+                logger.error('Deployment permanently failed after master timeout:', error);
+            }
             return null;
         } finally {
             this.currentDeploymentPromise = null;
