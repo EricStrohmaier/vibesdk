@@ -12,16 +12,6 @@ import tsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker'
 import defaultCode from '../../routes?raw';
 import './monaco-editor.module.css';
 
-// Suppress the benign Monaco TS-worker race: model disposed before diagnostics finish.
-if (typeof window !== 'undefined') {
-    window.addEventListener('unhandledrejection', (event) => {
-        const msg: string = event?.reason?.message ?? '';
-        if (msg.includes("Could not find source file: 'inmemory://model/")) {
-            event.preventDefault();
-        }
-    });
-}
-
 self.MonacoEnvironment = {
         getWorker(_, label) {
                 if (label === 'json') {

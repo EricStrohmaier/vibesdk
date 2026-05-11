@@ -6,6 +6,14 @@ import { initSentry } from './utils/sentry';
 import { routes } from './routes.ts';
 import './index.css';
 
+// Suppress benign Monaco TS-worker race: model disposed before diagnostics finish.
+window.addEventListener('unhandledrejection', (event) => {
+    const msg: string = (event?.reason as { message?: string })?.message ?? '';
+    if (msg.includes("Could not find source file: 'inmemory://model/")) {
+        event.preventDefault();
+    }
+});
+
 // Initialize Sentry before rendering
 initSentry();
 
@@ -19,7 +27,7 @@ declare global {
 }
 
 const router = createBrowserRouter(routes, {
-	hydrationData: window.__staticRouterHydrationData,
+        hydrationData: window.__staticRouterHydrationData,
 });
 
 createRoot(document.getElementById('root')!).render(

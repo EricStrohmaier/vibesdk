@@ -59,7 +59,12 @@ export function handleWebSocketMessage(
             case WebSocketMessageRequests.DEPLOY:
                 agent.deployProject().then((deploymentResult) => {
                     if (!deploymentResult.success) {
-                        logger.error('Deployment failed', deploymentResult);
+                        const errStr = String(deploymentResult.error ?? '');
+                        if (errStr.includes('cloud-only') || errStr.includes('SANDBOX_UNAVAILABLE') || errStr.includes('Containers have not been enabled')) {
+                            logger.warn('Deployment skipped — sandbox unavailable (Cloudflare Containers not enabled on account)', deploymentResult);
+                        } else {
+                            logger.error('Deployment failed', deploymentResult);
+                        }
                         return;
                     }
                     logger.info('Deployment completed', deploymentResult);
