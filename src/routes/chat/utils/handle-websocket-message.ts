@@ -1059,6 +1059,7 @@ export function createWebSocketMessageHandler(deps: HandleMessageDeps) {
             case 'screenshot_capture_started':
             case 'screenshot_capture_completed':
             case 'screenshot_capture_failed':
+            case 'screenshot_capture_error':
                 // Informational only — no UI action needed
                 break;
 
