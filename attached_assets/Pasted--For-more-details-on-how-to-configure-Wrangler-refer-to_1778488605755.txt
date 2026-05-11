@@ -1,0 +1,169 @@
+/**
+ * For more details on how to configure Wrangler, refer to:
+ * https://developers.cloudflare.com/workers/wrangler/configuration/
+ */
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "vibesdk",
+	"main": "worker/index.ts",
+	"compatibility_date": "2025-08-10",
+	"compatibility_flags": ["nodejs_compat"],
+	"version_metadata": {
+		"binding": "CF_VERSION_METADATA",
+	},
+	"assets": {
+		"directory": "dist",
+		"not_found_handling": "single-page-application",
+		// "run_worker_first": ["!/src/*", "!/api/docs/*"],
+		"run_worker_first": true,
+		"binding": "ASSETS",
+	},
+	"observability": {
+		"enabled": true,
+		"head_sampling_rate": 1,
+	},
+	"unsafe": {
+		"bindings": [
+			{
+				"name": "API_RATE_LIMITER",
+				"type": "ratelimit",
+				"namespace_id": "2101",
+				"simple": { "limit": 10000, "period": 60 },
+			},
+			{
+				"name": "AUTH_RATE_LIMITER",
+				"type": "ratelimit",
+				"namespace_id": "2102",
+				"simple": { "limit": 1000, "period": 60 },
+			},
+		],
+	},
+	/**
+	 * Bindings
+	 * Bindings allow your Worker to interact with resources on the Cloudflare Developer Platform, including
+	 * databases, object storage, AI inference, real-time communication and more.
+	 * https://developers.cloudflare.com/workers/runtime-apis/bindings/
+	 */
+	"ai": {
+		"binding": "AI",
+		"remote": true,
+	},
+	// Workers for Platforms (Enterprise only) - disabled for non-Enterprise accounts
+	// "dispatch_namespaces": [
+	// 	{
+	// 		"binding": "DISPATCHER",
+	// 		"namespace": "vibesdk-default-namespace",
+	// 		"remote": true,
+	// 	},
+	// ],
+	"containers": [
+		{
+			"class_name": "UserAppSandboxService",
+			"image": "./SandboxDockerfile",
+			// "image": "registry.cloudflare.com/vibesdk-production-userappsandboxservice:cfe197fc",
+			// Altering max_instances value will have no effect. Please use the MAX_SANDBOX_INSTANCES var instead.
+			"max_instances": 5,
+			// ATTENTION: Altering instance_type value will have no effect. Please use the SANDBOX_INSTANCE_TYPE var instead.
+			"instance_type": "standard-3",
+			"rollout_step_percentage": 100,
+		},
+	],
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "vibesdk-db",
+			"database_id": "305379e4-728d-4223-865f-39b596655258",
+			"migrations_dir": "migrations",
+			"remote": true,
+		},
+	],
+	"durable_objects": {
+		"bindings": [
+			{
+				"class_name": "CodeGeneratorAgent",
+				"name": "CodeGenObject",
+			},
+			{
+				"class_name": "UserAppSandboxService",
+				"name": "Sandbox",
+				"script_name": "vibesdk",
+				"remote": true,
+			},
+			{
+				"class_name": "DORateLimitStore",
+				"name": "DORateLimitStore",
+			},
+			{
+				"class_name": "UserSecretsStore",
+				"name": "UserSecretsStore",
+			},
+		],
+	},
+	"r2_buckets": [
+		{
+			"binding": "TEMPLATES_BUCKET",
+			"bucket_name": "vibesdk-templates",
+			"remote": true,
+			"preview_bucket_name": "vibesdk-templates",
+		},
+	],
+	"kv_namespaces": [
+		{
+			"binding": "VibecoderStore",
+			"id": "db196a1f70d246e595b777309e11e6ab",
+			"remote": true,
+		},
+	],
+	// "placement": {
+	//   "mode": "smart"
+	// },
+	"migrations": [
+		{
+			"new_sqlite_classes": ["CodeGeneratorAgent", "UserAppSandboxService"],
+			"tag": "v1",
+		},
+		{
+			"new_sqlite_classes": ["DORateLimitStore"],
+			"tag": "v2",
+		},
+		{
+			"new_sqlite_classes": ["UserSecretsStore"],
+			"tag": "v3",
+		},
+	],
+	"routes": [
+        {
+            "pattern": "app.alpen.digital",
+            "custom_domain": true
+        },
+        {
+            "pattern": "*app.alpen.digital/*",
+            "custom_domain": false,
+            "zone_id": "cab1c72adf566531cc539e70e1ab661d"
+        }
+    ],
+	"vars": {
+        "TEMPLATES_REPOSITORY": "https://github.com/cloudflare/vibesdk-templates",
+        "DISPATCH_NAMESPACE": "vibesdk-default-namespace",
+        "ENABLE_READ_REPLICAS": "true",
+        "CLOUDFLARE_AI_GATEWAY": "vibesdk-gateway",
+        "PLATFORM_CAPABILITIES": {
+            "features": {
+                "app": {
+                    "enabled": true
+                },
+                "presentation": {
+                    "enabled": false
+                },
+                "general": {
+                    "enabled": false
+                }
+            },
+            "version": "1.0.0"
+        },
+        "MAX_SANDBOX_INSTANCES": "5",
+        "SANDBOX_INSTANCE_TYPE": "standard-3"
+    },
+	"workers_dev": false,
+	"preview_urls": false,
+}
