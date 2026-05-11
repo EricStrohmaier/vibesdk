@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Kill anything already holding port 9229 or 5000 so restarts are clean
+fuser -k 9229/tcp 2>/dev/null || true
+fuser -k 5000/tcp 2>/dev/null || true
+sleep 0.5
+
 # Start a TCP-level proxy on port 9229 → 5000.
 # The .replit has both 9229 and 5000 mapped to externalPort=80; Replit routes to the
 # last entry (9229). This proxy transparently forwards all traffic (HTTP + WebSockets)
