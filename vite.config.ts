@@ -4,8 +4,9 @@ import react from '@vitejs/plugin-react';
 import svgr from 'vite-plugin-svgr';
 import path from 'path';
 
-import { cloudflare } from '@cloudflare/vite-plugin';
 import tailwindcss from '@tailwindcss/vite';
+
+const LIVE_BACKEND = 'https://app.alpen.digital';
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -15,27 +16,10 @@ export default defineConfig({
                 force: true,
         },
 
-        // build: {
-        //     rollupOptions: {
-        //       output: {
-        //             advancedChunks: {
-        //                 groups: [{name: 'vendor', test: /node_modules/}]
-        //             }
-        //         }
-        //     }
-        // },
         plugins: [
                 react(),
                 svgr(),
-                cloudflare({
-                        configPath: 'wrangler.jsonc',
-                        remoteBindings: true,
-                }),
                 tailwindcss(),
-                // sentryVitePlugin({
-                //      org: 'cloudflare-0u',
-                //      project: 'javascript-react',
-                // }),
         ],
 
         resolve: {
@@ -58,13 +42,19 @@ export default defineConfig({
                 // '__dirname': '""',
         },
 
-        worker: {
-                // Handle Prisma in worker context for development
-                format: 'es',
-        },
-
         server: {
                 allowedHosts: true,
+                proxy: {
+                        '/api': {
+                                target: LIVE_BACKEND,
+                                changeOrigin: true,
+                                secure: true,
+                                ws: true,
+                                // Strip Domain from Set-Cookie so cookies apply to the
+                                // Replit dev domain instead of app.alpen.digital
+                                cookieDomainRewrite: { 'app.alpen.digital': '' },
+                        },
+                },
                 watch: {
                         ignored: [
                                 '**/.cache/**',
