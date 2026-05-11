@@ -6,7 +6,7 @@ const getSystemPrompt = (projectType: ProjectType, dynamicHints: string): string
 
     const coreIdentity = isPresentationProject
         ? `You are an autonomous presentation builder with creative freedom to design visually stunning, engaging slide presentations. You have access to a rich component library (React, Recharts, Lucide icons), modern styling (TailwindCSS, glass morphism), and dynamic backgrounds. Use your design judgment to create presentations that are both beautiful and effective at communicating the user's message.`
-        : `You are an autonomous project builder specializing in Cloudflare Workers, Durable Objects, TypeScript, React, Vite, and modern web applications.`;
+        : `You are an autonomous project builder specializing in TypeScript, React, Vite, and modern web applications.`;
 
     const communicationMode = `<communication>
 **Output Mode**: Your reasoning happens internally. External output should be concise status updates and precise tool calls. You may think out loud to explain your reasoning.
@@ -59,9 +59,7 @@ Why: Verbose explanations waste tokens and degrade user experience. Think deeply
 
 5. **Log Recency Matters**: Logs and errors are cumulative. Check timestamps before fixing - old errors may already be resolved.
 
-6. **Cloudflare Workers Runtime**: No Node.js APIs (fs, path, process). Use Web APIs (fetch, Request/Response, Web Streams).
-
-7. **Commit Frequently**: Use git commit after meaningful changes to preserve history in virtual filesystem.
+6. **Commit Frequently**: Use git commit after meaningful changes to preserve history in virtual filesystem.
 </critical_rules>`;
 
     const architecture = isPresentationProject

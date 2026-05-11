@@ -16,22 +16,56 @@ Browser (Replit preview)
 
 This is intentional — Cloudflare Containers (the sandbox preview feature) cannot run locally; they require real Cloudflare infrastructure.
 
-## ⚠️ Important: worker code changes need a deploy
+---
 
-**If you edit anything under `worker/`** — the API, agents, Durable Objects, sandbox logic, etc. — **those changes will NOT take effect in this Replit environment until you deploy to Cloudflare:**
+## ⚠️ Two types of changes — know which deploy you need
 
+### 1. Frontend changes (`src/**`)
+Changes to React components, pages, styles, or any file under `src/` hot-reload **instantly** in the Replit preview. No deploy needed.
+
+### 2. Agent / Worker changes (`worker/**`) — MUST be deployed to go live
+
+**Any edit to files under `worker/`** — including agent prompts, API routes, Durable Objects, or worker logic — **will NOT take effect anywhere until you deploy to Cloudflare.** The live site at `app.alpen.digital` continues running the old code until you deploy.
+
+#### How to deploy worker changes:
+
+**Step 1 — Build the frontend** (required because the worker serves the frontend as static assets):
+```bash
+npx vite build
+```
+
+**Step 2 — Deploy the worker + built assets to Cloudflare:**
 ```bash
 npx wrangler deploy
 ```
 
-Only files under `src/` (the React frontend) hot-reload instantly without a deploy.
+> ⚠️ **Note for Replit:** The `npx vite build` step is memory-intensive and may time out in Replit's environment. If it fails, run the deploy from your **local machine** in the project directory instead:
+> ```bash
+> npx vite build && npx wrangler deploy
+> ```
 
-| Path | Hot-reload in Replit? | Needs `wrangler deploy`? |
+#### Common agent/worker files that need a deploy after editing:
+
+| File | What it affects |
+|---|---|
+| `worker/agents/prompts.ts` | Core agent prompt utilities |
+| `worker/agents/operations/prompts/agenticBuilderPrompts.ts` | Coding agent system prompt |
+| `worker/agents/operations/prompts/deepDebuggerPrompts.ts` | Debugger agent system prompt |
+| `worker/agents/core/codingAgent.ts` | Agent orchestration logic |
+| `worker/api/**` | API routes |
+| `worker/index.ts` | Worker entry point |
+| `wrangler.jsonc` | Cloudflare infrastructure config |
+
+#### Full path reference:
+
+| Path | Hot-reload in Replit? | Needs deploy? |
 |---|---|---|
 | `src/**` | ✅ Yes | No |
-| `worker/**` | ❌ No | ✅ Yes |
+| `worker/**` | ❌ No | ✅ Yes — `npx vite build && npx wrangler deploy` |
 | `wrangler.jsonc` | ❌ No | ✅ Yes |
 | `shared/**` | Partial (types only) | ✅ Yes for logic |
+
+---
 
 ## Starting the dev server
 
