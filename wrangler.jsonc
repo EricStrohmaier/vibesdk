@@ -86,8 +86,6 @@
 			{
 				"class_name": "UserAppSandboxService",
 				"name": "Sandbox",
-				"script_name": "vibesdk",
-				"remote": true,
 			},
 			{
 				"class_name": "DORateLimitStore",
@@ -161,6 +159,7 @@
             },
             "version": "1.0.0"
         },
+        "CUSTOM_DOMAIN": "app.alpen.digital",
         "MAX_SANDBOX_INSTANCES": "5",
         "SANDBOX_INSTANCE_TYPE": "standard-3"
     },
