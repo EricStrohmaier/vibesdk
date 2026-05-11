@@ -372,8 +372,13 @@ export function createWebSocketMessageHandler(deps: HandleMessageDeps) {
                 }
 
                 if (state.shouldBeGenerating && !isGenerating) {
-                    logger.debug('🔄 shouldBeGenerating=true, updating UI to active state');
-                    updateStage('code', { status: 'active' });
+                    // Don't override a stage that already completed — state updates
+                    // can arrive after phase_implemented has marked code as done.
+                    const codeStage = projectStages.find((stage) => stage.id === 'code');
+                    if (codeStage?.status !== 'completed') {
+                        logger.debug('🔄 shouldBeGenerating=true, updating UI to active state');
+                        updateStage('code', { status: 'active' });
+                    }
                 } else if (!state.shouldBeGenerating) {
                     const codeStage = projectStages.find((stage) => stage.id === 'code');
                     if (codeStage?.status === 'active' && !isGenerating) {
@@ -1049,6 +1054,13 @@ export function createWebSocketMessageHandler(deps: HandleMessageDeps) {
                 deps.setStaticIssueCount(lintCount + typecheckCount);
                 break;
             }
+
+            case 'cf_agent_mcp_servers':
+            case 'screenshot_capture_started':
+            case 'screenshot_capture_completed':
+            case 'screenshot_capture_failed':
+                // Informational only — no UI action needed
+                break;
 
             default:
                 logger.warn('Unhandled message:', message);
