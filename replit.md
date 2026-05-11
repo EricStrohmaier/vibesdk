@@ -27,22 +27,34 @@ Changes to React components, pages, styles, or any file under `src/` hot-reload 
 
 **Any edit to files under `worker/`** — including agent prompts, API routes, Durable Objects, or worker logic — **will NOT take effect anywhere until you deploy to Cloudflare.** The live site at `app.alpen.digital` continues running the old code until you deploy.
 
-#### How to deploy worker changes:
+#### How to deploy worker changes from Replit:
 
-**Step 1 — Build the frontend** (required because the worker serves the frontend as static assets):
+**Step 1 — Download the current live frontend assets** (avoids the memory-intensive vite build):
 ```bash
-npx vite build
+mkdir -p dist/assets
+curl -s https://app.alpen.digital/ -o dist/index.html
+# Get JS/CSS filenames from index.html, then download them:
+curl -s "https://app.alpen.digital/assets/<js-filename>.js" -o dist/assets/<js-filename>.js
+curl -s "https://app.alpen.digital/assets/<css-filename>.css" -o dist/assets/<css-filename>.css
 ```
 
-**Step 2 — Deploy the worker + built assets to Cloudflare:**
+> **Tip:** Run `curl -s https://app.alpen.digital/ | grep -oP 'assets/[^"]*'` to find the current asset filenames.
+
+**Step 2 — Deploy using the wrangler-specific tsconfig** (handles path aliases correctly):
 ```bash
-npx wrangler deploy
+npx wrangler deploy --tsconfig tsconfig.wrangler.json
 ```
 
-> ⚠️ **Note for Replit:** The `npx vite build` step is memory-intensive and may time out in Replit's environment. If it fails, run the deploy from your **local machine** in the project directory instead:
-> ```bash
-> npx vite build && npx wrangler deploy
-> ```
+> ⚠️ `wrangler.jsonc` must be temporarily patched before deploying from Replit:
+> 1. In `durable_objects.bindings`, remove `"script_name": "vibesdk"` and `"remote": true` from the `UserAppSandboxService` entry
+> 2. In `containers`, change `"image"` from `"./SandboxDockerfile"` to the currently-deployed registry image (visible in the deploy error output as the `-` line)
+> 3. Run `npx wrangler deploy --tsconfig tsconfig.wrangler.json`
+> 4. Restore both changes in `wrangler.jsonc` after a successful deploy
+
+**Alternative — deploy from your local machine** (simpler, no patching needed):
+```bash
+npx vite build && npx wrangler deploy
+```
 
 #### Common agent/worker files that need a deploy after editing:
 
