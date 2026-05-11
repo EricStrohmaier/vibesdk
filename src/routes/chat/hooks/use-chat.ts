@@ -598,8 +598,20 @@ export function useChat({
                                                 throw new Error('Missing websocketUrl for existing agent');
                                         }
 
-                                        logger.debug('connecting from init for existing chatId');
-                                        connectWithRetry(response.data.websocketUrl, {
+                                        // Rewrite the backend's absolute WS URL to go through
+                                        // the local Vite proxy (same fix as the new-session path above).
+                                        let existingWsUrl = response.data.websocketUrl;
+                                        try {
+                                                const parsed = new URL(existingWsUrl);
+                                                parsed.protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+                                                parsed.host = window.location.host;
+                                                existingWsUrl = parsed.toString();
+                                        } catch {
+                                                // keep original if URL parsing fails
+                                        }
+
+                                        logger.debug('connecting from init for existing chatId (rewritten for proxy):', existingWsUrl);
+                                        connectWithRetry(existingWsUrl, {
                                                 disableGenerate: true, // We'll handle generation resume in the WebSocket open handler
                                         });
                                 }

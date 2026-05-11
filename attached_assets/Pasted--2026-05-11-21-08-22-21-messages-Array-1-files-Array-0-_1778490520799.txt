@@ -1,0 +1,66 @@
+
+2026-05-11 21:08:22.21
+{messages: Array(1), files: Array(0), userQuery: null, chatId: "e6930db5-ff72-4349-b80b-d75347c11db5", bootstrapFiles: Array(0)…}
+2026-05-11 21:08:22.21
+{messages: Array(1), files: Array(0), userQuery: null, chatId: "e6930db5-ff72-4349-b80b-d75347c11db5", bootstrapFiles: Array(0)…}
+2026-05-11 21:08:22.59
+{message: "Failed to execute 'json' on 'Response': Unexpected token '<', "<!doctype "... is not valid JSON"}
+2026-05-11 21:08:22.59
+Failed to fetch vault status:
+{status: 0, statusText: "Network Error", endpoint: "/api/vault/status", name: "ApiError"}
+2026-05-11 21:08:22.59
+{messages: Array(1), files: Array(0), userQuery: null, chatId: "e6930db5-ff72-4349-b80b-d75347c11db5", bootstrapFiles: Array(0)…}
+2026-05-11 21:08:23.04
+{messages: Array(1), files: Array(0), userQuery: null, chatId: "e6930db5-ff72-4349-b80b-d75347c11db5", bootstrapFiles: Array(0)…}
+2026-05-11 21:08:24.06
+🔌 Retrying WebSocket connection (attempt 3/6):
+wss://app.alpen.digital/api/agent/e6930db5-ff72-4349-b80b-d75347c11db5/ws
+2026-05-11 21:08:24.06
+🔗 Attempting WebSocket connection to:
+wss://app.alpen.digital/api/agent/e6930db5-ff72-4349-b80b-d75347c11db5/ws
+2026-05-11 21:08:24.06
+{messages: Array(1), files: Array(0), userQuery: null, chatId: "e6930db5-ff72-4349-b80b-d75347c11db5", bootstrapFiles: Array(0)…}
+2026-05-11 21:08:24.26
+🔌 WebSocket connection closed with code close: [object Event]
+{isTrusted: false, code: "close", reason: Object, wasClean: true}
+2026-05-11 21:08:24.26
+🔄 Retrying WebSocket connection in 8s (attempt 4/6)
+2026-05-11 21:08:24.26
+❌ WebSocket error:
+{isTrusted: false}
+2026-05-11 21:08:24.26
+🔄 Retrying WebSocket connection in 16s (attempt 5/6)
+2026-05-11 21:08:24.26
+{messages: Array(1), files: Array(0), userQuery: null, chatId: "e6930db5-ff72-4349-b80b-d75347c11db5", bootstrapFiles: Array(0)…}
+2026-05-11 21:08:26.06
+🔌 Retrying WebSocket connection (attempt 5/6):
+wss://app.alpen.digital/api/agent/e6930db5-ff72-4349-b80b-d75347c11db5/ws
+2026-05-11 21:08:26.06
+🔗 Attempting WebSocket connection to:
+wss://app.alpen.digital/api/agent/e6930db5-ff72-4349-b80b-d75347c11db5/ws
+2026-05-11 21:08:26.06
+{messages: Array(1), files: Array(0), userQuery: null, chatId: "e6930db5-ff72-4349-b80b-d75347c11db5", bootstrapFiles: Array(0)…}
+2026-05-11 21:08:26.62
+🔌 WebSocket connection closed with code close: [object Event]
+{isTrusted: false, code: "close", reason: Object, wasClean: true}
+2026-05-11 21:08:26.62
+🔄 Retrying WebSocket connection in 30s (attempt 6/6)
+2026-05-11 21:08:26.62
+❌ WebSocket error:
+{isTrusted: false}
+2026-05-11 21:08:26.62
+💥 WebSocket connection failed permanently after 6 attempts
+2026-05-11 21:08:26.62
+{messages: Array(1), files: Array(0), userQuery: null, chatId: "e6930db5-ff72-4349-b80b-d75347c11db5", bootstrapFiles: Array(0)…}
+2026-05-11 21:08:30.10
+🔌 WebSocket connection closed with code close: [object Event]
+{isTrusted: false, code: "close", reason: Object, wasClean: true}
+2026-05-11 21:08:30.10
+💥 WebSocket connection failed permanently after 6 attempts
+2026-05-11 21:08:30.10
+❌ WebSocket error:
+{isTrusted: false}
+2026-05-11 21:08:30.10
+💥 WebSocket connection failed permanently after 6 attempts
+2026-05-11 21:08:30.10
+{messages: Array(1), files: Array(0), userQuery: null, chatId: "e6930db5-ff72-4349-b80b-d75347c11db5", bootstrapFiles: Array(0)…}
