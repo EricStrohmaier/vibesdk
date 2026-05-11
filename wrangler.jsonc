@@ -161,6 +161,7 @@
             },
             "version": "1.0.0"
         },
+        "CUSTOM_DOMAIN": "app.alpen.digital",
         "MAX_SANDBOX_INSTANCES": "5",
         "SANDBOX_INSTANCE_TYPE": "standard-3"
     },
