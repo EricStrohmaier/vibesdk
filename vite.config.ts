@@ -53,6 +53,9 @@ export default defineConfig({
                                 // Strip Domain from Set-Cookie so cookies apply to the
                                 // Replit dev domain instead of app.alpen.digital
                                 cookieDomainRewrite: { 'app.alpen.digital': '' },
+                                // Override Origin so the live CF worker's isOriginAllowed
+                                // check passes (Replit dev domain is not in the allow-list)
+                                headers: { origin: LIVE_BACKEND },
                         },
                 },
                 watch: {
